@@ -5,7 +5,7 @@
 
   /* ---------- 언어 ---------- */
   let lang = 'ko';
-  try { lang = localStorage.getItem('lang') || 'ko'; } catch (e) {}
+  try { lang = localStorage.getItem('lang') || 'en'; } catch (e) {} // 기본은 영어, 한/EN 버튼으로 바꾼 언어는 기억
 
   const UI = {
     ko: {

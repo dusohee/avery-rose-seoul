@@ -289,32 +289,32 @@ window.DATA = {
     { area: 'ttukseom', kind: 'eat', name: { ko: '한강 편의점 라면', en: 'Han River convenience-store ramen' }, note: { ko: '공원 편의점에서 즉석 라면 끓여서 강 보면서 먹기!', en: 'Cook instant ramen at the park convenience store and eat it by the river!' }, query: '뚝섬한강공원 편의점' },
 
     // 경복궁 주변
-    { area: 'gyeongbokgung', kind: 'see', ll: [37.57975, 126.97668], name: { ko: '경복궁', en: 'Gyeongbokgung Palace' }, photo: 'images/places/gyeongbokgung.jpg', note: { ko: '(예시) 근정전 앞에서 사진 꼭!', en: '' } },
-    { area: 'gyeongbokgung', kind: 'eat', ll: [37.57768, 126.97153], name: { ko: '토속촌 삼계탕', en: 'Tosokchon Samgyetang' }, photo: 'images/places/tosokchon.jpg', note: { ko: '(예시) 대표 메뉴: 삼계탕', en: '' }, query: '토속촌 삼계탕 서촌' },
-    { area: 'gyeongbokgung', kind: 'eat', ll: [37.58076, 126.97], name: { ko: '통인시장', en: 'Tongin Market' }, photo: 'images/places/tongin-market.jpg', note: { ko: '(예시) 엽전 도시락으로 반찬 골라 먹기', en: '' } },
-    { area: 'gyeongbokgung', kind: 'walk', ll: [37.583, 126.9815], name: { ko: '삼청동길', en: 'Samcheong-dong Street' }, photo: 'images/places/samcheong-dong.jpg', note: { ko: '(예시) 국립현대미술관에서 북쪽으로 쭉', en: '' } },
+    { area: 'gyeongbokgung', kind: 'see', ll: [37.57975, 126.97668], name: { ko: '경복궁', en: 'Gyeongbokgung Palace' }, photo: 'images/places/gyeongbokgung.jpg', note: { ko: '(예시) 근정전 앞에서 사진 꼭!', en: 'Take a photo in front of Geunjeongjeon, the main throne hall!' } },
+    { area: 'gyeongbokgung', kind: 'eat', ll: [37.57768, 126.97153], name: { ko: '토속촌 삼계탕', en: 'Tosokchon Samgyetang' }, photo: 'images/places/tosokchon.jpg', note: { ko: '(예시) 대표 메뉴: 삼계탕', en: 'Signature dish: samgyetang (ginseng chicken soup)' }, query: '토속촌 삼계탕 서촌' },
+    { area: 'gyeongbokgung', kind: 'eat', ll: [37.58076, 126.97], name: { ko: '통인시장', en: 'Tongin Market' }, photo: 'images/places/tongin-market.jpg', note: { ko: '(예시) 엽전 도시락으로 반찬 골라 먹기', en: 'Buy old-style coins and use them to fill a lunchbox with side dishes' } },
+    { area: 'gyeongbokgung', kind: 'walk', ll: [37.583, 126.9815], name: { ko: '삼청동길', en: 'Samcheong-dong Street' }, photo: 'images/places/samcheong-dong.jpg', note: { ko: '(예시) 국립현대미술관에서 북쪽으로 쭉', en: 'Walk north from the National Museum of Modern and Contemporary Art' } },
 
     // 남대문시장
-    { area: 'namdaemun', kind: 'eat', ll: [37.55939, 126.97767], name: { ko: '남대문시장 갈치조림골목', en: 'Braised Cutlassfish Alley' }, photo: 'images/places/galchi-jorim.jpg', note: { ko: '(예시) 매콤한 갈치조림', en: '' } },
-    { area: 'namdaemun', kind: 'see', ll: [37.55999, 126.97536], name: { ko: '숭례문', en: 'Sungnyemun Gate' }, photo: 'images/places/sungnyemun.jpg', note: { ko: '(예시) 시장 가는 길에 들르기', en: '' } },
+    { area: 'namdaemun', kind: 'eat', ll: [37.55939, 126.97767], name: { ko: '남대문시장 갈치조림골목', en: 'Braised Cutlassfish Alley' }, photo: 'images/places/galchi-jorim.jpg', note: { ko: '(예시) 매콤한 갈치조림', en: 'Spicy braised cutlassfish' } },
+    { area: 'namdaemun', kind: 'see', ll: [37.55999, 126.97536], name: { ko: '숭례문', en: 'Sungnyemun Gate' }, photo: 'images/places/sungnyemun.jpg', note: { ko: '(예시) 시장 가는 길에 들르기', en: 'Stop by on your way to the market' } },
 
     // 삼성 코엑스
-    { area: 'coex', kind: 'see', ll: [37.51006, 127.06016], name: { ko: '별마당도서관', en: 'Starfield Library' }, photo: 'images/places/starfield-library.jpg', note: { ko: '(예시) 거대한 책장 앞에서 사진', en: '' } },
-    { area: 'coex', kind: 'walk', ll: [37.5147, 127.0575], name: { ko: '봉은사', en: 'Bongeunsa Temple' }, photo: 'images/places/bongeunsa.jpg', note: { ko: '(예시) 조용히 한 바퀴', en: '' } },
+    { area: 'coex', kind: 'see', ll: [37.51006, 127.06016], name: { ko: '별마당도서관', en: 'Starfield Library' }, photo: 'images/places/starfield-library.jpg', note: { ko: '(예시) 거대한 책장 앞에서 사진', en: 'Take a photo in front of the giant bookshelves' } },
+    { area: 'coex', kind: 'walk', ll: [37.5147, 127.0575], name: { ko: '봉은사', en: 'Bongeunsa Temple' }, photo: 'images/places/bongeunsa.jpg', note: { ko: '(예시) 조용히 한 바퀴', en: 'Take a quiet walk around the temple' } },
 
     // 잠실
-    { area: 'jamsil', kind: 'see', ll: [37.51255, 127.10268], name: { ko: '서울스카이', en: 'Seoul Sky' }, photo: 'images/places/seoul-sky.jpg', note: { ko: '(예시) 해 질 녘 예약 추천', en: '' }, query: '서울스카이 롯데월드타워' },
-    { area: 'jamsil', kind: 'walk', ll: [37.51009, 127.10408], name: { ko: '석촌호수', en: 'Seokchon Lake' }, photo: 'images/places/seokchon-lake.jpg', note: { ko: '(예시) 호수 한 바퀴 약 40분', en: '' } },
+    { area: 'jamsil', kind: 'see', ll: [37.51255, 127.10268], name: { ko: '서울스카이', en: 'Seoul Sky' }, photo: 'images/places/seoul-sky.jpg', note: { ko: '(예시) 해 질 녘 예약 추천', en: 'Book a sunset time slot' }, query: '서울스카이 롯데월드타워' },
+    { area: 'jamsil', kind: 'walk', ll: [37.51009, 127.10408], name: { ko: '석촌호수', en: 'Seokchon Lake' }, photo: 'images/places/seokchon-lake.jpg', note: { ko: '(예시) 호수 한 바퀴 약 40분', en: 'About 40 minutes to walk around the lake' } },
 
     // 낙산공원
-    { area: 'naksan', kind: 'walk', ll: [37.58053, 127.00761], name: { ko: '낙산공원', en: 'Naksan Park' }, photo: 'images/areas/naksan.jpg', note: { ko: '(예시) 성곽 따라 노을 보기', en: '' } },
-    { area: 'naksan', kind: 'see', ll: [37.5786, 127.0063], name: { ko: '이화벽화마을', en: 'Ihwa Mural Village' }, photo: 'images/places/ihwa-mural-village.jpg', note: { ko: '(예시) 주민들이 사는 곳이니 조용히', en: '' } },
+    { area: 'naksan', kind: 'walk', ll: [37.58053, 127.00761], name: { ko: '낙산공원', en: 'Naksan Park' }, photo: 'images/areas/naksan.jpg', note: { ko: '(예시) 성곽 따라 노을 보기', en: 'Watch the sunset along the fortress wall' } },
+    { area: 'naksan', kind: 'see', ll: [37.5786, 127.0063], name: { ko: '이화벽화마을', en: 'Ihwa Mural Village' }, photo: 'images/places/ihwa-mural-village.jpg', note: { ko: '(예시) 주민들이 사는 곳이니 조용히', en: 'People live here, so please keep it quiet' } },
 
     // 인왕산
-    { area: 'inwangsan', kind: 'walk', ll: [37.585, 126.95788], name: { ko: '인왕산 정상', en: 'Inwangsan Summit' }, photo: 'images/areas/inwangsan.jpg', note: { ko: '(예시) 정상에서 경복궁 내려다보기', en: '' } },
+    { area: 'inwangsan', kind: 'walk', ll: [37.585, 126.95788], name: { ko: '인왕산 정상', en: 'Inwangsan Summit' }, photo: 'images/areas/inwangsan.jpg', note: { ko: '(예시) 정상에서 경복궁 내려다보기', en: 'Look down on Gyeongbokgung from the summit' } },
 
     // 공릉동
-    { area: 'gongneung', kind: 'walk', ll: [37.62389, 127.09118], name: { ko: '경춘선숲길', en: 'Gyeongchun Line Forest Trail' }, photo: 'images/areas/gongneung.jpg', note: { ko: '(예시) 옛 기찻길 따라 산책', en: '' } },
+    { area: 'gongneung', kind: 'walk', ll: [37.62389, 127.09118], name: { ko: '경춘선숲길', en: 'Gyeongchun Line Forest Trail' }, photo: 'images/areas/gongneung.jpg', note: { ko: '(예시) 옛 기찻길 따라 산책', en: 'Stroll along the old railway line' } },
   ],
 
   /* ---------------- 필수 정보 ---------------- */
