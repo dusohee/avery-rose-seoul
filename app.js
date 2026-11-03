@@ -57,7 +57,7 @@
     en: {
       city: 'Seoul, South Korea',
       whereTo: 'Where to?',
-      details: 'Details',
+      details: 'See details',
       showTaxi: 'Show the taxi driver',
       back: 'Back',
       areaGuide: 'Area Guide',
