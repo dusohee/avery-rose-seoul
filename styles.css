@@ -555,69 +555,100 @@ svg { width: 20px; height: 20px; fill: currentColor; flex: none; }
 .tip-art-fare { background: #fff8ec; }
 
 /* ---------- 환율 계산기 ---------- */
-.fx-card { position: relative; padding: 8px; }
-.fx-field {
+.flag { display: inline-block; flex: none; width: 20px; height: 20px; vertical-align: -5px; }
+
+/* 계산 카드: 위 입력 / 아래 결과, 가운데 구분선 위 바꾸기 버튼 */
+.fx-card { padding: 6px 22px; }
+.fx-side { display: flex; align-items: center; gap: 12px; min-height: 92px; }
+.fx-chip {
+  flex: none;
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 76px;
-  padding: 0 18px;
-  border-radius: var(--r-inner);
+  gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border-radius: var(--r-pill);
   background: var(--surface-soft);
+  font-size: 14px;
+  font-weight: 700;
 }
-.fx-field-out { margin-top: 8px; background: var(--accent); }
-.fx-code { flex: none; display: flex; align-items: baseline; gap: 6px; font-size: 14px; font-weight: 700; }
-.fx-code b { font-size: 20px; }
+.fx-chip .flag { width: 24px; height: 24px; }
 .fx-input, .fx-output {
   flex: 1;
   min-width: 0;
   text-align: right;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.fx-input { border: 0; outline: none; background: transparent; color: var(--text); font-family: inherit; padding: 0; }
+.fx-input { border: 0; outline: none; background: transparent; color: var(--text-2); font-family: inherit; padding: 0; }
+.fx-output { font-size: 40px; font-weight: 700; color: var(--text); }
+.fx-divider { position: relative; height: 1px; background: var(--line); }
 .fx-swap {
   position: absolute;
   left: 50%;
-  top: 68px; /* 두 칸 사이 경계(8 + 76 + 4) 한가운데 */
-  z-index: 1;
+  top: 50%;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  margin-left: -20px;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
   border: 4px solid var(--surface);
   border-radius: 50%;
-  background: var(--dark);
-  color: #fff;
+  background: var(--accent);
+  color: var(--text);
   cursor: pointer;
-  transform: rotate(90deg);
 }
-.fx-swap svg { width: 18px; height: 18px; }
-.fx-rate { margin: 10px 10px 6px; font-size: 12.5px; color: var(--muted); }
+.fx-swap svg { width: 20px; height: 20px; transform: rotate(90deg); }
 
-.fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.fx-tile {
+/* 환율 표시: 초록 점 + 국기 */
+.fx-rate { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 12px 6px 0; font-size: 13px; color: var(--text-2); }
+.fx-rate b { color: var(--text); font-weight: 600; }
+.fx-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.fx-dot-live { background: #2fbf71; box-shadow: 0 0 0 3px rgba(47, 191, 113, 0.18); }
+
+/* 자주 쓰는 금액: 옆으로 넘기는 칩 */
+.fx-chips { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px; padding: 0 16px 2px; scrollbar-width: none; }
+.fx-chips::-webkit-scrollbar { display: none; }
+.fx-qchip {
+  flex: none;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
-  padding: 14px 16px;
+  gap: 1px;
+  padding: 10px 16px;
   border: 0;
-  border-radius: var(--r-inner);
+  border-radius: 20px;
   background: var(--surface);
+  cursor: pointer;
+}
+.fx-qchip b { font-size: 16px; letter-spacing: -0.02em; }
+.fx-qchip span { font-size: 12.5px; color: var(--muted); }
+.fx-qchip:active, .fx-row:active { transform: scale(0.97); }
+
+/* 이 정도 해요: 일러스트 리스트 */
+.fx-list { padding: 6px 16px; }
+.fx-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
   text-align: left;
   cursor: pointer;
 }
-.fx-tile:active { transform: scale(0.97); }
-.fx-tile-label { font-size: 12.5px; color: var(--muted); }
-.fx-tile-label:empty { display: none; }
-.fx-tile-krw { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
-.fx-tile-usd { font-size: 14px; color: var(--text-2); }
+.fx-row:last-child { border-bottom: 0; }
+.fx-row .tip-art { width: 52px; height: 52px; border-radius: 16px; background: #fff8ec; }
+.fx-row .tip-art svg { width: 46px; height: 46px; }
+.fx-row-name { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; }
+.fx-row-price { display: flex; flex-direction: column; align-items: flex-end; }
+.fx-row-price b { font-size: 16px; letter-spacing: -0.02em; }
+.fx-row-price span { font-size: 12.5px; color: var(--muted); }
 
 /* 인사말 "서울" 옆 태극기 */
 .greet-flag { display: inline-block; width: 0.82em; height: 0.82em; margin: 0 0.06em 0 0.1em; vertical-align: -0.06em; }

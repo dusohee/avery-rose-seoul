@@ -393,9 +393,9 @@ window.DATA = {
     fallbackDate: '2026-11-03',
     quick: [1000, 5000, 10000, 50000],
     examples: [
-      { name: { ko: '지하철 1회', en: 'Subway ride' }, krw: 1550 },
-      { name: { ko: '버스 1회', en: 'Bus ride' }, krw: 1500 },
-      { name: { ko: '공항버스 6015', en: 'Airport bus 6015' }, krw: 17000 },
+      { art: 'subway', name: { ko: '지하철 1회', en: 'Subway ride' }, krw: 1550 },
+      { art: 'bus', name: { ko: '버스 1회', en: 'Bus ride' }, krw: 1500 },
+      { art: 'plane', name: { ko: '공항버스 6015', en: 'Airport bus 6015' }, krw: 17000 },
     ],
   },
 

@@ -536,6 +536,23 @@
       <path d="M27 55l-13-5 8-10z" fill="${PAL.blue}"/>
       <circle cx="32" cy="32" r="10.5" fill="${PAL.yellow}"/>
       <text x="32" y="36" text-anchor="middle" font-size="11" font-weight="800" fill="${PAL.black}" font-family="Pretendard Variable, sans-serif">30</text>`,
+    // 지하철 앞모습 (환율 화면 예시용)
+    subway: `
+      <rect x="15" y="7" width="34" height="42" rx="10" fill="${PAL.blue}"/>
+      <rect x="20" y="13" width="24" height="14" rx="3" fill="#fff"/>
+      <rect x="15" y="40" width="34" height="4" fill="${PAL.red}"/>
+      <circle cx="23" cy="34" r="3" fill="${PAL.yellow}"/><circle cx="41" cy="34" r="3" fill="${PAL.yellow}"/>
+      <path d="M21 50l-5 8M43 50l5 8M10 58h44" stroke="${PAL.black}" stroke-width="3" stroke-linecap="round"/>`,
+    // 비행기 + 해
+    plane: `
+      <circle cx="16" cy="16" r="8" fill="${PAL.yellow}"/>
+      <g transform="rotate(-18 34 36)">
+        <rect x="8" y="31" width="50" height="11" rx="5.5" fill="${PAL.pink}"/>
+        <path d="M28 33l9-16h7l-4 16z" fill="${PAL.blue}"/>
+        <path d="M28 40l9 16h7l-4-16z" fill="${PAL.blue}"/>
+        <path d="M9 33l2-9h6l2 9z" fill="${PAL.red}"/>
+        <circle cx="50" cy="36.5" r="2" fill="#fff"/><circle cx="43" cy="36.5" r="2" fill="#fff"/>
+      </g>`,
     // 초록 교통카드 + 동전
     fare: `
       <rect x="4" y="16" width="40" height="27" rx="4" fill="${PAL.green}"/>
@@ -675,16 +692,32 @@
   const fmtUSD = (n) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const fmtTo = (n) => (fxFrom === 'USD' ? fmtKRW(n) : fmtUSD(n));
 
-  function fxRateText() {
-    const base = `1 USD = ${Math.round(fxRate.value).toLocaleString('ko-KR')}${lang === 'en' ? ' KRW' : '원'}`;
-    return fxRate.live ? `${base} · ${fxRate.date} ${t('fxLive')}` : `${base} · ${t('fxApprox')}`;
+  const FLAG = {
+    USD: '<img class="flag" src="images/flags/us.svg" alt="" />',
+    KRW: '<img class="flag" src="favicon.svg" alt="" />',
+  };
+
+  function fxDateText() {
+    const d = new Date(fxRate.date + 'T00:00:00');
+    if (isNaN(d)) return fxRate.date || '';
+    return lang === 'en'
+      ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      : `${d.getMonth() + 1}월 ${d.getDate()}일`;
+  }
+
+  function fxRateHtml() {
+    const krw = Math.round(fxRate.value).toLocaleString('ko-KR') + (lang === 'en' ? ' won' : '원');
+    const rate = `${FLAG.USD}<b>1 USD</b> = ${FLAG.KRW}<b>${krw}</b>`;
+    return fxRate.live
+      ? `<span class="fx-dot fx-dot-live"></span>Live · ${rate} · ${fxDateText()}`
+      : `<span class="fx-dot"></span>${rate} · ${t('fxApprox')}`;
   }
 
   function updateFxOutput() {
     const out = document.getElementById('fx-output');
     if (out) out.textContent = fmtTo(fxConvert(parseAmount(fxAmount)));
     const rate = document.getElementById('fx-rate');
-    if (rate) rate.textContent = fxRateText();
+    if (rate) rate.innerHTML = fxRateHtml();
   }
 
   // 최신 환율은 환율 화면을 처음 열 때 한 번만 받아옴 (키 필요 없는 무료 API)
@@ -701,48 +734,61 @@
         try { localStorage.setItem('fxRate', JSON.stringify(fxRate)); } catch (e) {}
         updateFxOutput();
         document.querySelectorAll('[data-fx-krw]').forEach((el) => {
-          el.textContent = fmtUSD(+el.dataset.fxKrw / fxRate.value);
+          el.textContent = '≈ ' + fmtUSD(+el.dataset.fxKrw / fxRate.value);
         });
       })
       .catch(() => {});
   }
 
   function renderFx() {
-    const from = fxFrom === 'USD' ? { code: 'USD', sym: '$' } : { code: 'KRW', sym: '₩' };
-    const to = fxFrom === 'USD' ? { code: 'KRW', sym: '₩' } : { code: 'USD', sym: '$' };
-    const krwTile = (krw, label) => `
-      <button class="fx-tile" data-action="fx-set" data-krw="${krw}">
-        <span class="fx-tile-label">${label}</span>
-        <span class="fx-tile-krw">${fmtKRW(krw)}</span>
-        <span class="fx-tile-usd" data-fx-krw="${krw}">${fmtUSD(krw / fxRate.value)}</span>
-      </button>`;
+    const from = fxFrom;
+    const to = fxFrom === 'USD' ? 'KRW' : 'USD';
+    const usd = (krw) => `<span data-fx-krw="${krw}">≈ ${fmtUSD(krw / fxRate.value)}</span>`;
+
+    const chips = FX.quick
+      .map((k) => `
+        <button class="fx-qchip" data-action="fx-set" data-krw="${k}">
+          <b>₩${k.toLocaleString('ko-KR')}</b>${usd(k)}
+        </button>`)
+      .join('');
+
+    const rows = FX.examples
+      .map((x) => `
+        <button class="fx-row" data-action="fx-set" data-krw="${x.krw}">
+          ${x.art ? tipArt(x.art) : ''}
+          <span class="fx-row-name">${esc(L(x.name))}</span>
+          <span class="fx-row-price"><b>${fmtKRW(x.krw)}</b>${usd(x.krw)}</span>
+        </button>`)
+      .join('');
 
     return `
       ${header(t('fxTitle'), true)}
       <h1 class="page-title page-title-solo">${t('fxTitle')}</h1>
 
       <section class="card fx-card">
-        <label class="fx-field">
-          <span class="fx-code"><b>${from.sym}</b>${from.code}</span>
+        <label class="fx-side">
+          <span class="fx-chip">${FLAG[from]}${from}</span>
           <input id="fx-input" class="fx-input" type="text" inputmode="decimal" autocomplete="off"
-                 value="${esc(fxAmount)}" placeholder="0" aria-label="${from.code}" />
+                 value="${esc(fxAmount)}" placeholder="0" aria-label="${from}" />
         </label>
-        <button class="fx-swap" data-action="fx-swap" aria-label="${t('fxSwap')}">${ICON.fx}</button>
-        <div class="fx-field fx-field-out">
-          <span class="fx-code"><b>${to.sym}</b>${to.code}</span>
+        <div class="fx-divider">
+          <button class="fx-swap" data-action="fx-swap" aria-label="${t('fxSwap')}">${ICON.fx}</button>
+        </div>
+        <div class="fx-side">
+          <span class="fx-chip">${FLAG[to]}${to}</span>
           <output id="fx-output" class="fx-output">${fmtTo(fxConvert(parseAmount(fxAmount)))}</output>
         </div>
-        <p id="fx-rate" class="fx-rate">${fxRateText()}</p>
       </section>
+      <p id="fx-rate" class="fx-rate">${fxRateHtml()}</p>
 
       <section class="block">
         <h2 class="block-title">${t('fxQuick')}</h2>
-        <div class="fx-grid">${FX.quick.map((k) => krwTile(k, '')).join('')}</div>
+        <div class="fx-chips">${chips}</div>
       </section>
 
       <section class="block">
         <h2 class="block-title">${t('fxExamples')}</h2>
-        <div class="fx-grid">${FX.examples.map((x) => krwTile(x.krw, esc(L(x.name)))).join('')}</div>
+        <div class="card fx-list">${rows}</div>
       </section>
     `;
   }
