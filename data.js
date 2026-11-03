@@ -175,7 +175,7 @@ window.DATA = {
     {
       id: 'ttukseom',
       emoji: '🌊',
-      image: 'images/areas/ttukseom.jpg',
+      image: 'images/areas/ttukseom.png',
       cardBg: '#DDEFF5',
       searchHint: '뚝섬한강공원',
       name: { ko: '자양 뚝섬한강공원', en: 'Ttukseom Hangang Park' },
@@ -285,7 +285,7 @@ window.DATA = {
     { area: 'hongdae', kind: 'walk', ll: [37.56, 126.9245], name: { ko: '경의선숲길 (연남동)', en: 'Gyeongui Line Forest Park (Yeonnam)' }, note: { ko: '옛 기찻길이 공원이 된 산책로. 주변에 카페가 많아요', en: 'An old railway turned into a park, lined with cafés' }, query: '경의선숲길 연남동' },
 
     // 자양 뚝섬한강공원
-    { area: 'ttukseom', kind: 'walk', ll: [37.52983, 127.06811], name: { ko: '뚝섬한강공원', en: 'Ttukseom Hangang Park' }, photo: 'images/areas/ttukseom.jpg', note: { ko: '강가 잔디밭에 앉아 쉬기. 해 지면 다리 야경이 예뻐요', en: 'Relax on the riverside grass; the bridges glow after sunset' } },
+    { area: 'ttukseom', kind: 'walk', ll: [37.52983, 127.06811], name: { ko: '뚝섬한강공원', en: 'Ttukseom Hangang Park' }, photo: 'images/areas/ttukseom.png', note: { ko: '강가 잔디밭에 앉아 쉬기. 해 지면 다리 야경이 예뻐요', en: 'Relax on the riverside grass; the bridges glow after sunset' } },
     { area: 'ttukseom', kind: 'eat', name: { ko: '한강 편의점 라면', en: 'Han River convenience-store ramen' }, note: { ko: '공원 편의점에서 즉석 라면 끓여서 강 보면서 먹기!', en: 'Cook instant ramen at the park convenience store and eat it by the river!' }, query: '뚝섬한강공원 편의점' },
 
     // 경복궁 주변
@@ -478,7 +478,6 @@ window.DATA = {
     { file: 'places/shinsegae.jpg', artist: 'Abasaa', license: 'Public domain', url: 'https://commons.wikimedia.org/wiki/File:Shinsegae_Department_Store_Main_Store_at_night_01.JPG' },
     { file: 'places/lotte.jpg', artist: '서울연구원', license: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:Night_view_of_Euljiro_1-ga_intersection_and_the_Sogong-dong_Lotte_town.jpg' },
     { file: 'places/benjamin-poke.jpg', artist: 'Andy Li', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Salmon_Poke_Bowl_(S)_with_Spicy_mayo_sauce_-_Kitokito.jpg' },
-    { file: 'areas/ttukseom.jpg', artist: 'Real rism', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:NIght_view_at_Ttukseom_Hangang_Park.jpg' },
     { file: 'areas/museum.jpg', artist: 'Jinah78', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Front_view_of_national_museum_of_korea.jpg' },
     { file: 'places/national-museum.jpg', artist: 'Ethan Doyle White', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Exterior_of_the_National_Museum_of_Korea_in_Seoul.jpg' },
     { file: 'areas/hongdae.jpg', artist: 'lumoplank', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Hongdae,_Seoul-_Part_II_-_Hongdae2237.jpg' },
