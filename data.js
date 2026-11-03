@@ -140,7 +140,7 @@ window.DATA = {
     {
       id: 'museum',
       emoji: '🏛️',
-      image: 'images/areas/museum.jpg',
+      image: 'images/areas/museum.png',
       cardBg: '#E4ECF7',
       searchHint: '용산',
       name: { ko: '이촌 국립중앙박물관', en: 'National Museum of Korea' },
@@ -276,7 +276,7 @@ window.DATA = {
     { area: 'myeongdong', kind: 'eat', ll: [37.55931, 126.98575], name: { ko: '벤자민 포케 엔 샐러드', en: 'Benjamin Poke & Salad' }, photo: 'images/places/benjamin-poke.jpg', note: { ko: '가볍게 먹고 싶은 날엔 포케 한 그릇', en: 'A poke bowl for when you want something light' }, query: '벤자민포케' },
 
     // 이촌 국립중앙박물관
-    { area: 'museum', kind: 'see', ll: [37.52395, 126.98032], name: { ko: '국립중앙박물관', en: 'National Museum of Korea' }, photo: 'images/places/national-museum.jpg', note: { ko: '상설전시 무료. 반가사유상 두 점이 있는 "사유의 방"은 꼭 보기', en: 'Free permanent exhibits. Don’t miss the "Room of Quiet Contemplation" with the two pensive Buddha statues' } },
+    { area: 'museum', kind: 'see', ll: [37.52395, 126.98032], name: { ko: '국립중앙박물관', en: 'National Museum of Korea' }, photo: 'images/areas/museum.png', note: { ko: '상설전시 무료. 반가사유상 두 점이 있는 "사유의 방"은 꼭 보기', en: 'Free permanent exhibits. Don’t miss the "Room of Quiet Contemplation" with the two pensive Buddha statues' } },
     { area: 'museum', kind: 'walk', ll: [37.52261, 126.97956], name: { ko: '거울못', en: 'Mirror Pond' }, photo: 'images/areas/museum.jpg', note: { ko: '박물관 앞 연못과 정자. 산책하며 사진 찍기 좋아요', en: 'The pond and pavilion in front of the museum — a nice photo stroll' }, query: '국립중앙박물관 거울못' },
     { area: 'museum', kind: 'walk', ll: [37.52269, 126.98353], name: { ko: '용산가족공원', en: 'Yongsan Family Park' }, note: { ko: '박물관 바로 옆 넓은 잔디 공원', en: 'A wide grassy park right next to the museum' } },
 
@@ -479,7 +479,6 @@ window.DATA = {
     { file: 'places/lotte.jpg', artist: '서울연구원', license: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:Night_view_of_Euljiro_1-ga_intersection_and_the_Sogong-dong_Lotte_town.jpg' },
     { file: 'places/benjamin-poke.jpg', artist: 'Andy Li', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Salmon_Poke_Bowl_(S)_with_Spicy_mayo_sauce_-_Kitokito.jpg' },
     { file: 'areas/museum.jpg', artist: 'Jinah78', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Front_view_of_national_museum_of_korea.jpg' },
-    { file: 'places/national-museum.jpg', artist: 'Ethan Doyle White', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Exterior_of_the_National_Museum_of_Korea_in_Seoul.jpg' },
     { file: 'places/hongdae-street.jpg', artist: 'Minseong Kim', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Hongdae_Street.jpg' },
   ],
 };
