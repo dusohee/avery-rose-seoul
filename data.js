@@ -242,7 +242,7 @@ window.DATA = {
     {
       id: 'gongneung',
       emoji: '🏡',
-      image: 'images/areas/gongneung.jpg',
+      image: 'images/areas/gongneung.png',
       cardBg: '#FFF3C4',
       badge: 'ours',
       searchHint: '공릉동',
@@ -319,7 +319,7 @@ window.DATA = {
     { area: 'inwangsan', kind: 'walk', ll: [37.585, 126.95788], name: { ko: '인왕산 정상', en: 'Inwangsan Summit' }, photo: 'images/areas/inwangsan.jpg', note: { ko: '(예시) 정상에서 경복궁 내려다보기', en: 'Look down on Gyeongbokgung from the summit' } },
 
     // 공릉동
-    { area: 'gongneung', kind: 'walk', ll: [37.62389, 127.09118], name: { ko: '경춘선숲길', en: 'Gyeongchun Line Forest Trail' }, photo: 'images/areas/gongneung.jpg', note: { ko: '(예시) 옛 기찻길 따라 산책', en: 'Stroll along the old railway line' } },
+    { area: 'gongneung', kind: 'walk', ll: [37.62389, 127.09118], name: { ko: '경춘선숲길', en: 'Gyeongchun Line Forest Trail' }, photo: 'images/areas/gongneung.png', note: { ko: '(예시) 옛 기찻길 따라 산책', en: 'Stroll along the old railway line' } },
     { area: 'gongneung', kind: 'walk', ll: [37.6317305, 127.0686996], name: { ko: '경춘숲공원', en: 'Gyeongchun Forest Park' }, note: { ko: '경춘선숲길 옆 동네 공원. 가볍게 산책하기 좋아요', en: 'A neighborhood park by the Gyeongchun Line Forest Trail — nice for an easy walk' }, naverUrl: 'https://naver.me/G38uM6BG', googleUrl: 'https://www.google.com/maps/search/?api=1&query=%EA%B2%BD%EC%B6%98%EC%88%B2%EA%B3%B5%EC%9B%90%20%EC%84%9C%EC%9A%B8%20%EB%85%B8%EC%9B%90%EA%B5%AC' },
     { area: 'gongneung', kind: 'see', ll: [37.6375707, 127.0596673], name: { ko: '노원두물마루', en: 'Nowon Dumulmaru Observatory' }, note: { ko: '중랑천 옆 전망대. 강과 동네 풍경을 한눈에', en: 'An observation deck by Jungnangcheon stream, with views over the water and neighborhood' }, naverUrl: 'https://naver.me/5LHCrFrq', googleUrl: 'https://www.google.com/maps/search/?api=1&query=%EB%85%B8%EC%9B%90%EB%91%90%EB%AC%BC%EB%A7%88%EB%A3%A8%20%EC%84%9C%EC%9A%B8%20%EB%85%B8%EC%9B%90%EA%B5%AC' },
     { area: 'gongneung', kind: 'eat', ll: [37.6264779, 127.0764035], name: { ko: '마카모예 브레드바', en: 'Makamoye Bread Bar' }, note: { ko: '베이커리 카페. 잠봉뵈르, 어니언 대파 크림치즈 베이글', en: 'Bakery café — jambon-beurre, onion & scallion cream-cheese bagel' }, naverUrl: 'https://naver.me/FafyFmUu', googleUrl: 'https://www.google.com/maps/search/?api=1&query=%EB%A7%88%EC%B9%B4%EB%AA%A8%EC%98%88%20%EB%B8%8C%EB%A0%88%EB%93%9C%EB%B0%94%20%EC%84%9C%EC%9A%B8%20%EB%85%B8%EC%9B%90%EA%B5%AC%20%EB%8F%99%EC%9D%BC%EB%A1%9C190%EA%B8%B8%2061' },
