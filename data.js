@@ -159,7 +159,7 @@ window.DATA = {
     {
       id: 'hongdae',
       emoji: '🎸',
-      image: 'images/areas/hongdae.jpg',
+      image: 'images/areas/hongdae.png',
       cardBg: '#F6E3F0',
       searchHint: '홍대',
       name: { ko: '홍대', en: 'Hongdae' },
@@ -480,7 +480,6 @@ window.DATA = {
     { file: 'places/benjamin-poke.jpg', artist: 'Andy Li', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Salmon_Poke_Bowl_(S)_with_Spicy_mayo_sauce_-_Kitokito.jpg' },
     { file: 'areas/museum.jpg', artist: 'Jinah78', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Front_view_of_national_museum_of_korea.jpg' },
     { file: 'places/national-museum.jpg', artist: 'Ethan Doyle White', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Exterior_of_the_National_Museum_of_Korea_in_Seoul.jpg' },
-    { file: 'areas/hongdae.jpg', artist: 'lumoplank', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Hongdae,_Seoul-_Part_II_-_Hongdae2237.jpg' },
     { file: 'places/hongdae-street.jpg', artist: 'Minseong Kim', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Hongdae_Street.jpg' },
   ],
 };
