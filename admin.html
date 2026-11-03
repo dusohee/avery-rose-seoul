@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#CDD5E9" />
+  <title>장소 관리 · Avery&Rose in Seoul</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <style>
+    /* 색·모서리는 styles.css(DESIGN.md)와 같은 값 */
+    :root {
+      --bg: #cdd5e9; --bg-soft: #dce2f0; --surface: #fff; --surface-soft: #f1f3f8;
+      --text: #101114; --text-2: #4b5060; --muted: #7a7f8c; --line: rgba(16, 17, 20, 0.12);
+      --accent: #f9d98a; --dark: #111214; --danger: #c8473a;
+      --eat: #f28b7d; --see: #6fa3e6; --walk: #5fb582;
+      --r-card: 30px; --r-inner: 18px; --r-pill: 999px;
+      --font: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.55; letter-spacing: -0.01em; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    h1, h2, h3, p { margin: 0; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 20px 16px 120px; }
+
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 8px 4px 20px; }
+    header h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.035em; }
+    header a { font-size: 14px; color: var(--text-2); }
+
+    .card { background: var(--surface); border-radius: var(--r-card); padding: 20px; margin-bottom: 14px; }
+    .card h2 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    ol.steps { margin: 10px 0 14px; padding-left: 20px; font-size: 14px; color: var(--text-2); }
+    ol.steps li { margin-bottom: 4px; }
+
+    .btn { border: 0; border-radius: var(--r-pill); padding: 11px 18px; min-height: 44px; background: var(--surface-soft); cursor: pointer; font-weight: 500; }
+    .btn.primary { background: var(--dark); color: #fff; }
+    .btn.accent { background: var(--accent); }
+    .btn.danger { color: var(--danger); }
+    .btn.small { padding: 6px 12px; min-height: 36px; font-size: 14px; }
+    .btn:disabled { opacity: 0.45; cursor: default; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 14px; scrollbar-width: none; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip { flex: none; border: 0; border-radius: var(--r-pill); padding: 9px 14px; background: var(--bg-soft); cursor: pointer; font-size: 14px; white-space: nowrap; }
+    .chip.on { background: var(--dark); color: #fff; }
+
+    .place { display: flex; gap: 12px; align-items: flex-start; padding: 14px 0; border-top: 1px solid var(--line); }
+    .place:first-of-type { border-top: 0; }
+    .thumb { flex: none; width: 64px; height: 64px; border-radius: 16px; background: var(--surface-soft) center / cover no-repeat; display: grid; place-items: center; font-size: 24px; }
+    .place .body { flex: 1; min-width: 0; }
+    .place .name { font-weight: 600; }
+    .place .note { font-size: 14px; color: var(--text-2); }
+    .place .warn { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .place .actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .kind { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--muted); margin-right: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dot-eat { background: var(--eat); } .dot-see { background: var(--see); } .dot-walk { background: var(--walk); }
+
+    .field { display: block; margin-bottom: 14px; }
+    label.field > span, .field > .label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    label.field > small { display: block; font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+    input[type=text], input[type=password], input[type=url], select, textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 14px; padding: 11px 13px; background: #fff; font-size: 16px;
+    }
+    textarea { min-height: 72px; resize: vertical; }
+    .seg { display: flex; gap: 6px; }
+    .seg label { flex: 1; }
+    .seg input { position: absolute; opacity: 0; pointer-events: none; }
+    .seg span { display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: var(--r-pill); padding: 10px; background: var(--surface-soft); cursor: pointer; font-size: 14px; }
+    .seg input:checked + span { background: var(--dark); color: #fff; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 420px) { .pair { grid-template-columns: 1fr; } }
+    .photo-preview { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r-inner); background: var(--surface-soft) center / cover no-repeat; display: grid; place-items: center; color: var(--muted); margin-bottom: 8px; }
+
+    .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--dark); color: #fff; padding: 12px 18px; border-radius: 18px; font-size: 14px; box-shadow: 0 10px 30px rgba(32, 44, 80, 0.2); z-index: 10; }
+    .toast.error { background: var(--danger); }
+    .center { text-align: center; padding: 40px 0; color: var(--text-2); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>장소 관리</h1>
+      <a href="index.html">사이트 보기 ›</a>
+    </header>
+    <main id="root"></main>
+  </div>
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- 지역 목록(DATA.areas)을 쓰려고 불러와요. 장소 목록은 GitHub에서 최신본을 직접 읽어요. -->
+  <script src="places.js"></script>
+  <script src="data.js"></script>
+  <script>
+  (function () {
+    /* ---------------- 설정 ---------------- */
+    const REPO = 'dusohee/avery-rose-seoul';
+    const BRANCH = 'main';
+    const PLACES_PATH = 'places.js';
+    const PHOTO_DIR = 'images/places';
+    const PHOTO_MAX = 1200; // 업로드 사진 긴 변 최대 px
+    const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
+    const TOKEN_KEY = 'seoul-admin-token';
+
+    const AREAS = window.DATA.areas;
+    const KINDS = [
+      { id: 'eat', label: '먹기', emoji: '🍜' },
+      { id: 'see', label: '구경 · 쇼핑', emoji: '📷' },
+      { id: 'walk', label: '걷기', emoji: '👟' },
+    ];
+    const KIND_LABEL = Object.fromEntries(KINDS.map((k) => [k.id, k.label]));
+    const KIND_EMOJI = Object.fromEntries(KINDS.map((k) => [k.id, k.emoji]));
+
+    const root = document.getElementById('root');
+    const state = {
+      token: localStorage.getItem(TOKEN_KEY) || '',
+      places: null, // GitHub에서 읽어온 최신 목록
+      sha: null,
+      area: AREAS[0].id,
+      editing: null, // { index: -1(새 장소) | n, draft, photoBlob, photoUrl }
+      busy: false,
+      loadError: null,
+    };
+
+    /* ---------------- 도우미 ---------------- */
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const areaName = (id) => (AREAS.find((a) => a.id === id) || { name: { ko: id } }).name.ko;
+    // 사이트 배포 전에도 보이도록 사진은 GitHub 원본 주소로 미리보기
+    const photoSrc = (path) => (/^https?:/.test(path) ? path : RAW + path.split('/').map(encodeURIComponent).join('/'));
+
+    let toastTimer;
+    function toast(msg, isError) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = 'toast' + (isError ? ' error' : '');
+      el.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => (el.hidden = true), isError ? 6000 : 3500);
+    }
+
+    function utf8ToB64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let bin = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      return btoa(bin);
+    }
+    function b64ToUtf8(b64) {
+      const bin = atob(b64.replace(/\s/g, ''));
+      return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
+    }
+    const blobToB64 = (blob) =>
+      new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result).split(',')[1]);
+        r.onerror = reject;
+        r.readAsDataURL(blob);
+      });
+
+    /* ---------------- places.js 읽기/쓰기 형식 ---------------- */
+    function parsePlaces(text) {
+      const start = text.indexOf('[', text.indexOf('window.PLACES'));
+      const end = text.lastIndexOf(']');
+      const body = text.slice(start, end + 1).replace(/^\s*\/\/.*$/gm, '');
+      return JSON.parse(body.replace(/,(\s*)\]$/, '$1]'));
+    }
+
+    const KEY_ORDER = ['area', 'kind', 'll', 'name', 'photo', 'note', 'query', 'naverUrl', 'googleUrl'];
+    function serializePlaces(places) {
+      const lines = [];
+      const known = AREAS.map((a) => a.id);
+      const groups = known.concat([...new Set(places.map((p) => p.area))].filter((id) => !known.includes(id)));
+      for (const id of groups) {
+        const list = places.filter((p) => p.area === id);
+        if (!list.length) continue;
+        lines.push(`  // ${areaName(id)}`);
+        for (const p of list) {
+          const o = {};
+          for (const k of KEY_ORDER) if (p[k] !== undefined) o[k] = p[k];
+          for (const k of Object.keys(p)) if (!(k in o)) o[k] = p[k];
+          lines.push('  ' + JSON.stringify(o) + ',');
+        }
+      }
+      return (
+        `/* =========================================================\n` +
+        ` * 소희의 추천 장소 — admin.html(관리자 페이지)이 자동으로 고치는 파일이에요.\n` +
+        ` * 직접 고쳐도 되지만, 한 줄에 장소 하나(JSON) 형식은 지켜주세요.\n` +
+        ` * kind: 'eat'(먹기) | 'see'(구경) | 'walk'(걷기)\n` +
+        ` * ========================================================= */\n` +
+        `window.PLACES = [\n` +
+        lines.join('\n').replace(/,$/, '') +
+        `\n];\n`
+      );
+    }
+
+    /* ---------------- GitHub API ---------------- */
+    async function gh(path, opts = {}) {
+      const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
+        ...opts,
+        headers: {
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${state.token}`,
+          ...(opts.body ? { 'Content-Type': 'application/json' } : {}),
+        },
+        cache: 'no-store',
+      });
+      if (!res.ok) {
+        const err = new Error(`GitHub ${res.status}`);
+        err.status = res.status;
+        throw err;
+      }
+      return res.json();
+    }
+
+    function explain(err) {
+      if (err.status === 401) return '토큰이 맞지 않거나 만료됐어요. 아래 "토큰 지우기" 후 다시 넣어주세요.';
+      if (err.status === 403 || err.status === 404) return '토큰에 이 저장소 쓰기 권한(Contents: Read and write)이 없어요.';
+      if (err.status === 409 || err.status === 422) return '다른 곳에서 먼저 바뀌었어요. 새로고침 후 다시 해주세요.';
+      return '저장하지 못했어요. 인터넷 연결을 확인해주세요. (' + err.message + ')';
+    }
+
+    async function loadPlaces() {
+      const file = await gh(`contents/${PLACES_PATH}?ref=${BRANCH}`);
+      state.places = parsePlaces(b64ToUtf8(file.content));
+      state.sha = file.sha;
+    }
+
+    async function savePlaces(places, message) {
+      const res = await gh(`contents/${PLACES_PATH}`, {
+        method: 'PUT',
+        body: JSON.stringify({ message, content: utf8ToB64(serializePlaces(places)), sha: state.sha, branch: BRANCH }),
+      });
+      state.places = places;
+      state.sha = res.content.sha;
+    }
+
+    async function uploadPhoto(blob, baseName) {
+      const slug = (baseName || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'place';
+      const path = `${PHOTO_DIR}/${slug}-${Date.now().toString(36)}.jpg`;
+      await gh(`contents/${path}`, {
+        method: 'PUT',
+        body: JSON.stringify({ message: `사진 추가: ${path.split('/').pop()}`, content: await blobToB64(blob), branch: BRANCH }),
+      });
+      return path;
+    }
+
+    // 휴대폰 사진은 커서 긴 변 PHOTO_MAX px JPEG로 줄여서 올려요
+    async function shrinkPhoto(file) {
+      const url = URL.createObjectURL(file);
+      try {
+        const img = await new Promise((resolve, reject) => {
+          const i = new Image();
+          i.onload = () => resolve(i);
+          i.onerror = () => reject(new Error('decode'));
+          i.src = url;
+        });
+        const scale = Math.min(1, PHOTO_MAX / Math.max(img.naturalWidth, img.naturalHeight));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.naturalWidth * scale);
+        canvas.height = Math.round(img.naturalHeight * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        return await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.85));
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    /* ---------------- 화면 ---------------- */
+    function render() {
+      if (!state.token) return renderToken();
+      if (state.loadError)
+        return (root.innerHTML = `<section class="card"><h2>불러오지 못했어요</h2><p class="muted" style="margin-bottom:14px">${esc(state.loadError)}</p>
+          <div class="row"><button class="btn primary" data-action="retry">다시 시도</button><button class="btn" data-action="logout">토큰 지우기</button></div></section>`);
+      if (!state.places) return (root.innerHTML = `<div class="center">불러오는 중…</div>`);
+      if (state.editing) return renderForm();
+      renderList();
+    }
+
+    function renderToken() {
+      root.innerHTML = `
+        <section class="card">
+          <h2>처음 한 번만: GitHub 연결</h2>
+          <p class="muted">이 페이지가 사이트 파일을 대신 고칠 수 있도록 "토큰"이 필요해요. 토큰은 이 브라우저에만 저장돼요.</p>
+          <ol class="steps">
+            <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener"><b>여기</b></a>를 눌러 GitHub 토큰 만들기 화면 열기</li>
+            <li>Token name: 아무거나 (예: <i>seoul admin</i>), Expiration: 원하는 기간</li>
+            <li>Repository access → <b>Only select repositories</b> → <b>avery-rose-seoul</b></li>
+            <li>Permissions → Repository permissions → <b>Contents</b> → <b>Read and write</b></li>
+            <li>맨 아래 <b>Generate token</b> → 나온 <code>github_pat_…</code> 를 복사해서 아래에 붙여넣기</li>
+          </ol>
+          <label class="field">
+            <span>토큰</span>
+            <input type="password" id="token" placeholder="github_pat_..." autocomplete="off" />
+          </label>
+          <button class="btn primary" data-action="save-token">연결하기</button>
+        </section>`;
+    }
+
+    function renderList() {
+      const counts = Object.fromEntries(AREAS.map((a) => [a.id, state.places.filter((p) => p.area === a.id).length]));
+      const items = state.places.map((p, i) => ({ p, i })).filter(({ p }) => p.area === state.area);
+      root.innerHTML = `
+        <nav class="chips">
+          ${AREAS.map((a) => `<button class="chip ${a.id === state.area ? 'on' : ''}" data-action="area" data-id="${a.id}">${esc(a.emoji)} ${esc(a.name.ko)} ${counts[a.id]}</button>`).join('')}
+        </nav>
+        <section class="card">
+          <div class="row" style="justify-content: space-between; margin-bottom: 4px">
+            <h2 style="margin: 0">${esc(areaName(state.area))}</h2>
+            <button class="btn accent small" data-action="new">＋ 장소 추가</button>
+          </div>
+          ${items.length ? '' : `<p class="muted" style="padding: 14px 0">아직 장소가 없어요.</p>`}
+          ${items
+            .map(({ p, i }, n) => {
+              const missing = [!p.ll && '지도 핀(좌표)', !p.name?.en && '영어 이름', !p.note?.en && '영어 설명'].filter(Boolean);
+              return `
+              <div class="place">
+                <div class="thumb" style="${p.photo ? `background-image:url('${esc(photoSrc(p.photo))}')` : ''}">${p.photo ? '' : KIND_EMOJI[p.kind] || '📍'}</div>
+                <div class="body">
+                  <div><span class="kind"><i class="dot dot-${esc(p.kind)}"></i>${esc(KIND_LABEL[p.kind] || p.kind)}</span></div>
+                  <div class="name">${esc(p.name?.ko)}</div>
+                  <div class="note">${esc(p.note?.ko)}</div>
+                  ${missing.length ? `<div class="warn">비어 있음: ${missing.join(' · ')}</div>` : ''}
+                  <div class="actions">
+                    <button class="btn small" data-action="edit" data-i="${i}">수정</button>
+                    <button class="btn small" data-action="up" data-i="${i}" ${n === 0 ? 'disabled' : ''} aria-label="위로">↑</button>
+                    <button class="btn small" data-action="down" data-i="${i}" ${n === items.length - 1 ? 'disabled' : ''} aria-label="아래로">↓</button>
+                    <button class="btn small danger" data-action="delete" data-i="${i}">삭제</button>
+                  </div>
+                </div>
+              </div>`;
+            })
+            .join('')}
+        </section>
+        <p class="muted" style="text-align:center">저장하면 1~2분 뒤 사이트에 반영돼요 · <button class="btn small" data-action="logout">토큰 지우기</button></p>`;
+    }
+
+    function renderForm() {
+      const { index, draft: d, photoUrl } = state.editing;
+      const preview = photoUrl || (d.photo ? photoSrc(d.photo) : '');
+      root.innerHTML = `
+        <section class="card">
+          <h2>${index < 0 ? '새 장소' : '장소 수정'}</h2>
+          <form id="form">
+            <label class="field">
+              <span>동네</span>
+              <select name="area">${AREAS.map((a) => `<option value="${a.id}" ${a.id === d.area ? 'selected' : ''}>${esc(a.emoji)} ${esc(a.name.ko)}</option>`).join('')}</select>
+            </label>
+            <div class="field">
+              <span class="label">종류</span>
+              <div class="seg">
+                ${KINDS.map((k) => `<label><input type="radio" name="kind" value="${k.id}" ${d.kind === k.id ? 'checked' : ''} /><span><i class="dot dot-${k.id}"></i>${k.label}</span></label>`).join('')}
+              </div>
+            </div>
+            <div class="pair">
+              <label class="field"><span>이름 (한글) *</span><input type="text" name="name_ko" value="${esc(d.name.ko)}" required /></label>
+              <label class="field"><span>이름 (영어)</span><input type="text" name="name_en" value="${esc(d.name.en)}" /></label>
+            </div>
+            <label class="field"><span>한 줄 추천 (한글)</span><textarea name="note_ko" placeholder="예: 대표 메뉴 칼국수 + 만두">${esc(d.note.ko)}</textarea></label>
+            <label class="field"><span>한 줄 추천 (영어)</span><textarea name="note_en">${esc(d.note.en)}</textarea>
+              <small>영어 칸을 비워두면 EN 모드에서도 한글이 보여요.</small></label>
+
+            <div class="field">
+              <span class="label">사진</span>
+              <div class="photo-preview" style="${preview ? `background-image:url('${esc(preview)}')` : ''}">${preview ? '' : '사진 없음 (이모지가 대신 보여요)'}</div>
+              <div class="row">
+                <label class="btn small" style="display:inline-flex;align-items:center">사진 고르기<input type="file" name="photo" accept="image/*" hidden /></label>
+                ${preview ? `<button type="button" class="btn small danger" data-action="remove-photo">사진 빼기</button>` : ''}
+              </div>
+            </div>
+
+            <label class="field"><span>네이버 지도 링크</span><input type="url" name="naverUrl" value="${esc(d.naverUrl)}" placeholder="https://naver.me/..." /></label>
+            <label class="field"><span>구글 지도 링크</span><input type="url" name="googleUrl" value="${esc(d.googleUrl)}" placeholder="https://maps.app.goo.gl/..." />
+              <small>비워두면 이름으로 검색하는 링크가 자동으로 만들어져요.</small></label>
+            <label class="field"><span>좌표 (지도 핀)</span><input type="text" name="ll" value="${esc(d.ll ? d.ll.join(', ') : '')}" placeholder="37.57975, 126.97668" inputmode="decimal" />
+              <small>구글 지도에서 장소를 꾹 누르면(PC는 오른쪽 클릭) 맨 위에 나오는 숫자를 그대로 붙여넣으세요.</small></label>
+            <label class="field"><span>검색어 (선택)</span><input type="text" name="query" value="${esc(d.query)}" placeholder="예: 토속촌 삼계탕 서촌" />
+              <small>지도 링크를 비웠는데 이름 검색이 엉뚱하게 나올 때만 적어요.</small></label>
+
+            <div class="row" style="margin-top: 8px">
+              <button type="submit" class="btn primary" ${state.busy ? 'disabled' : ''}>${state.busy ? '저장 중…' : '저장'}</button>
+              <button type="button" class="btn" data-action="cancel" ${state.busy ? 'disabled' : ''}>취소</button>
+            </div>
+          </form>
+        </section>`;
+    }
+
+    // 폼 → draft (다시 그려도 입력이 안 날아가게)
+    function readForm() {
+      const f = document.getElementById('form');
+      if (!f) return;
+      const v = (n) => f.elements[n].value.trim();
+      const d = state.editing.draft;
+      d.area = v('area');
+      d.kind = (f.querySelector('input[name=kind]:checked') || {}).value || 'eat';
+      d.name = { ko: v('name_ko'), en: v('name_en') };
+      d.note = { ko: v('note_ko'), en: v('note_en') };
+      d.naverUrl = v('naverUrl');
+      d.googleUrl = v('googleUrl');
+      d.query = v('query');
+      d.llText = v('ll');
+    }
+
+    function parseLL(text) {
+      if (!text) return undefined;
+      const nums = text.match(/-?\d+(?:\.\d+)?/g);
+      if (!nums || nums.length < 2) return null;
+      const lat = Number(nums[0]), lng = Number(nums[1]);
+      if (lat < 33 || lat > 39 || lng < 124 || lng > 132) return null; // 한국 범위 밖이면 잘못 붙여넣은 것
+      return [lat, lng];
+    }
+
+    async function submitForm() {
+      readForm();
+      const e = state.editing;
+      const d = e.draft;
+      if (!d.name.ko) return toast('한글 이름을 적어주세요.', true);
+      const ll = parseLL(d.llText);
+      if (ll === null) return toast('좌표 형식이 이상해요. 예: 37.57975, 126.97668', true);
+
+      state.busy = true;
+      render();
+      try {
+        let photo = d.photo;
+        if (e.photoBlob) photo = await uploadPhoto(e.photoBlob, d.name.en);
+        const place = { area: d.area, kind: d.kind, ll, name: d.name, photo: photo || undefined, note: d.note };
+        if (d.query) place.query = d.query;
+        if (d.naverUrl) place.naverUrl = d.naverUrl;
+        if (d.googleUrl) place.googleUrl = d.googleUrl;
+        // 폼에 없는 예전 필드는 그대로 유지
+        for (const k of Object.keys(d.extra)) place[k] = d.extra[k];
+
+        const next = state.places.slice();
+        if (e.index < 0) next.push(place);
+        else next[e.index] = place;
+        await savePlaces(next, `${e.index < 0 ? '장소 추가' : '장소 수정'}: ${d.name.ko}`);
+        state.area = d.area;
+        state.editing = null;
+        toast('저장했어요! 1~2분 뒤 사이트에 반영돼요.');
+      } catch (err) {
+        console.error(err);
+        toast(err.message === 'decode' ? '사진을 읽지 못했어요.' : explain(err), true);
+      } finally {
+        state.busy = false;
+        render();
+      }
+    }
+
+    async function mutate(fn, message, okMsg) {
+      if (state.busy) return;
+      state.busy = true;
+      try {
+        const next = state.places.slice();
+        fn(next);
+        await savePlaces(next, message);
+        if (okMsg) toast(okMsg);
+      } catch (err) {
+        console.error(err);
+        toast(explain(err), true);
+      } finally {
+        state.busy = false;
+        render();
+      }
+    }
+
+    // 같은 동네 안에서 바로 위/아래 장소와 자리 바꾸기
+    function move(i, dir) {
+      const same = state.places.map((p, j) => j).filter((j) => state.places[j].area === state.places[i].area);
+      const j = same[same.indexOf(i) + dir];
+      if (j === undefined) return;
+      mutate((list) => ([list[i], list[j]] = [list[j], list[i]]), `장소 순서 변경: ${areaName(state.places[i].area)}`);
+    }
+
+    function startEdit(index) {
+      const p = index < 0 ? { area: state.area, kind: 'eat', name: {}, note: {} } : state.places[index];
+      const { area, kind, ll, name, photo, note, query, naverUrl, googleUrl, ...extra } = p;
+      state.editing = {
+        index,
+        draft: {
+          area, kind, photo,
+          name: { ko: name?.ko || '', en: name?.en || '' },
+          note: { ko: note?.ko || '', en: note?.en || '' },
+          ll, query: query || '', naverUrl: naverUrl || '', googleUrl: googleUrl || '', extra,
+        },
+        photoBlob: null,
+        photoUrl: null,
+      };
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    function clearPendingPhoto() {
+      if (state.editing.photoUrl) URL.revokeObjectURL(state.editing.photoUrl);
+      state.editing.photoBlob = null;
+      state.editing.photoUrl = null;
+    }
+
+    /* ---------------- 이벤트 ---------------- */
+    root.addEventListener('click', (ev) => {
+      const el = ev.target.closest('[data-action]');
+      if (!el || el.disabled) return;
+      const i = Number(el.dataset.i);
+      switch (el.dataset.action) {
+        case 'save-token': {
+          const t = document.getElementById('token').value.trim();
+          if (!t) return toast('토큰을 붙여넣어 주세요.', true);
+          state.token = t;
+          localStorage.setItem(TOKEN_KEY, t);
+          start();
+          break;
+        }
+        case 'logout':
+          if (!confirm('이 브라우저에서 토큰을 지울까요?')) return;
+          localStorage.removeItem(TOKEN_KEY);
+          state.token = '';
+          state.places = null;
+          render();
+          break;
+        case 'retry':
+          start();
+          break;
+        case 'area':
+          state.area = el.dataset.id;
+          render();
+          break;
+        case 'new':
+          startEdit(-1);
+          break;
+        case 'edit':
+          startEdit(i);
+          break;
+        case 'up':
+          move(i, -1);
+          break;
+        case 'down':
+          move(i, 1);
+          break;
+        case 'delete': {
+          const name = state.places[i].name?.ko;
+          if (!confirm(`"${name}"을(를) 삭제할까요?`)) return;
+          mutate((list) => list.splice(i, 1), `장소 삭제: ${name}`, '삭제했어요.');
+          break;
+        }
+        case 'remove-photo':
+          readForm();
+          clearPendingPhoto();
+          state.editing.draft.photo = undefined;
+          render();
+          break;
+        case 'cancel':
+          clearPendingPhoto();
+          state.editing = null;
+          render();
+          break;
+      }
+    });
+
+    root.addEventListener('change', async (ev) => {
+      if (ev.target.name !== 'photo' || !ev.target.files[0]) return;
+      readForm();
+      try {
+        const blob = await shrinkPhoto(ev.target.files[0]);
+        clearPendingPhoto();
+        state.editing.photoBlob = blob;
+        state.editing.photoUrl = URL.createObjectURL(blob);
+      } catch {
+        toast('이 사진은 읽지 못했어요. JPG나 PNG로 다시 골라주세요.', true);
+      }
+      render();
+    });
+
+    root.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      if (!state.busy) submitForm();
+    });
+
+    window.addEventListener('beforeunload', (ev) => {
+      if (state.editing || state.busy) ev.preventDefault();
+    });
+
+    async function start() {
+      state.loadError = null;
+      render();
+      if (!state.token) return;
+      try {
+        await loadPlaces();
+      } catch (err) {
+        console.error(err);
+        state.loadError = explain(err);
+      }
+      render();
+    }
+    start();
+  })();
+  </script>
+</body>
+</html>
