@@ -210,7 +210,7 @@ window.DATA = {
     {
       id: 'coex',
       emoji: '📚',
-      image: 'images/areas/coex.jpg',
+      image: 'images/areas/coex.png',
       cardBg: '#EDE6F7',
       searchHint: '삼성동',
       name: { ko: '삼성 코엑스', en: 'Samseong COEX' },
@@ -299,7 +299,7 @@ window.DATA = {
     { area: 'namdaemun', kind: 'see', ll: [37.55999, 126.97536], name: { ko: '숭례문', en: 'Sungnyemun Gate' }, photo: 'images/places/sungnyemun.jpg', note: { ko: '(예시) 시장 가는 길에 들르기', en: 'Stop by on your way to the market' } },
 
     // 삼성 코엑스
-    { area: 'coex', kind: 'see', ll: [37.51006, 127.06016], name: { ko: '별마당도서관', en: 'Starfield Library' }, photo: 'images/places/starfield-library.jpg', note: { ko: '(예시) 거대한 책장 앞에서 사진', en: 'Take a photo in front of the giant bookshelves' } },
+    { area: 'coex', kind: 'see', ll: [37.51006, 127.06016], name: { ko: '별마당도서관', en: 'Starfield Library' }, photo: 'images/areas/coex.png', note: { ko: '(예시) 거대한 책장 앞에서 사진', en: 'Take a photo in front of the giant bookshelves' } },
     { area: 'coex', kind: 'walk', ll: [37.5147, 127.0575], name: { ko: '봉은사', en: 'Bongeunsa Temple' }, photo: 'images/places/bongeunsa.jpg', note: { ko: '(예시) 조용히 한 바퀴', en: 'Take a quiet walk around the temple' } },
 
     // 잠실
@@ -463,7 +463,6 @@ window.DATA = {
   photoCredits: [
     { area: 'gyeongbokgung', artist: 'Brady Bellini', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Gyeongbokgung(palace)_Geunjeongjeon(hall).jpg' },
     { area: 'namdaemun', artist: 'Sgroey', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Namdaemun_shopping_street_2.jpg' },
-    { area: 'coex', artist: 'Sean Young (@assanges)', license: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:Starfield_Library_COEX_20240218.jpg' },
     { area: 'jamsil', artist: 'kallerna', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Lotte_World_morning_view_8.jpg' },
     { area: 'naksan', artist: 'Marsilar', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:02025_Park_Naksan,_Seoul.jpg' },
     { area: 'inwangsan', artist: 'Rtflakfizer', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Seoul_Fortress_Wall,_Inwangsan.3.jpg' },
