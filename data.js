@@ -101,10 +101,10 @@ window.DATA = {
     {
       id: 'naksan',
       emoji: '🌇',
-      image: 'images/areas/naksan.jpg',
+      image: 'images/areas/naksan.png',
       cardBg: '#FFE8CC',
       searchHint: '혜화',
-      name: { ko: '낙산공원', en: 'Naksan Park' }, photo: 'images/areas/naksan.jpg',
+      name: { ko: '낙산공원', en: 'Naksan Park' }, photo: 'images/areas/naksan.png',
       tagline: { ko: '성곽길 · 노을과 야경', en: 'Fortress wall · Sunset & night view' },
       intro: {
         ko: '옛 서울 성곽을 따라 걷는 언덕 공원. 노을 지고 불 켜지는 서울을 한눈에 볼 수 있어.',
@@ -307,7 +307,7 @@ window.DATA = {
     { area: 'jamsil', kind: 'walk', ll: [37.51009, 127.10408], name: { ko: '석촌호수', en: 'Seokchon Lake' }, photo: 'images/places/seokchon-lake.jpg', note: { ko: '(예시) 호수 한 바퀴 약 40분', en: 'About 40 minutes to walk around the lake' } },
 
     // 낙산공원
-    { area: 'naksan', kind: 'walk', ll: [37.58053, 127.00761], name: { ko: '낙산공원', en: 'Naksan Park' }, photo: 'images/areas/naksan.jpg', note: { ko: '(예시) 성곽 따라 노을 보기', en: 'Watch the sunset along the fortress wall' } },
+    { area: 'naksan', kind: 'walk', ll: [37.58053, 127.00761], name: { ko: '낙산공원', en: 'Naksan Park' }, photo: 'images/areas/naksan.png', note: { ko: '(예시) 성곽 따라 노을 보기', en: 'Watch the sunset along the fortress wall' } },
     { area: 'naksan', kind: 'see', ll: [37.5786, 127.0063], name: { ko: '이화벽화마을', en: 'Ihwa Mural Village' }, photo: 'images/places/ihwa-mural-village.jpg', note: { ko: '(예시) 주민들이 사는 곳이니 조용히', en: 'People live here, so please keep it quiet' } },
     { area: 'naksan', kind: 'walk', ll: [37.58051, 127.00284], name: { ko: '마로니에공원', en: 'Marronnier Park' }, note: { ko: '대학로 한가운데 공원. 거리 공연과 소극장 구경하기 좋아요', en: 'A park in the heart of Daehangno — street performances and small theaters all around' }, query: '마로니에공원 대학로' },
     { area: 'naksan', kind: 'eat', ll: [37.5818701, 127.0001999], name: { ko: '오이지 대학로', en: 'Oiji Daehangno' }, note: { ko: '한식. 명란 치즈 순두부, 차돌 들기름 국수', en: 'Korean food — pollock-roe cheese soft tofu stew, brisket perilla-oil noodles' }, naverUrl: 'https://naver.me/F42Mv52Z', googleUrl: 'https://www.google.com/maps/search/?api=1&query=%EC%98%A4%EC%9D%B4%EC%A7%80%20%EB%8C%80%ED%95%99%EB%A1%9C%20%EC%84%9C%EC%9A%B8%20%EC%A2%85%EB%A1%9C%EA%B5%AC%20%EB%8C%80%ED%95%99%EB%A1%9C9%EA%B8%B8%2033' },
@@ -464,7 +464,6 @@ window.DATA = {
     { area: 'gyeongbokgung', artist: 'Brady Bellini', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Gyeongbokgung(palace)_Geunjeongjeon(hall).jpg' },
     { area: 'namdaemun', artist: 'Sgroey', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Namdaemun_shopping_street_2.jpg' },
     { area: 'jamsil', artist: 'kallerna', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Lotte_World_morning_view_8.jpg' },
-    { area: 'naksan', artist: 'Marsilar', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:02025_Park_Naksan,_Seoul.jpg' },
     { area: 'inwangsan', artist: 'Rtflakfizer', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Seoul_Fortress_Wall,_Inwangsan.3.jpg' },
     { area: 'gongneung', artist: 'Integral', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Korail_Hwarangdae_Station.jpg' },
     { file: 'areas/myeongdong.jpg', artist: 'Sgroey', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Myeongdong_night_market_seoul_4.jpg' },
