@@ -194,7 +194,7 @@ window.DATA = {
     {
       id: 'gangnam',
       emoji: '🛍️',
-      image: 'images/areas/gangnam.jpg',
+      image: 'images/areas/gangnam.png',
       cardBg: '#E3EEF9',
       searchHint: '강남',
       name: { ko: '강남', en: 'Gangnam' },
@@ -451,7 +451,6 @@ window.DATA = {
   photoCredits: [
     { area: 'gyeongbokgung', artist: 'Brady Bellini', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Gyeongbokgung(palace)_Geunjeongjeon(hall).jpg' },
     { area: 'namdaemun', artist: 'Sgroey', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Namdaemun_shopping_street_2.jpg' },
-    { area: 'gangnam', artist: 'kallerna', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Gangnam_from_Yeoksam_1.jpg' },
     { area: 'coex', artist: 'Sean Young (@assanges)', license: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:Starfield_Library_COEX_20240218.jpg' },
     { area: 'jamsil', artist: 'kallerna', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Lotte_World_morning_view_8.jpg' },
     { area: 'naksan', artist: 'Marsilar', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:02025_Park_Naksan,_Seoul.jpg' },
