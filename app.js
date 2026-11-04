@@ -637,15 +637,18 @@
   /* ---------- Simple Korean ---------- */
   function renderKorean() {
     const canSpeak = 'speechSynthesis' in window;
-    const row = (p) => `
+    const row = (p) => {
+      const canPlay = canSpeak || VOICES[p.ko];
+      return `
       <li class="phrase">
         <div class="phrase-text">
           <p class="phrase-ko" lang="ko">${esc(p.ko)}</p>
           <p class="phrase-rom">${esc(p.rom)}</p>
           <p class="phrase-en">${esc(p.en)}</p>
         </div>
-        ${canSpeak ? `<button class="icon-btn speak-btn" data-action="speak" data-text="${esc(p.ko)}" aria-label="${t('listen')}: ${esc(p.ko)}">${ICON.sound}</button>` : ''}
+        ${canPlay ? `<button class="icon-btn speak-btn" data-action="speak" data-text="${esc(p.ko)}" aria-label="${t('listen')}: ${esc(p.ko)}">${ICON.sound}</button>` : ''}
       </li>`;
+    };
 
     return `
       ${header(t('korean'), true)}
@@ -663,7 +666,21 @@
     `;
   }
 
+  // 소희가 admin에서 녹음한 문장은 녹음 파일을, 없으면 휴대폰 목소리로 읽어줘요
+  const VOICES = window.VOICES || {};
+  let voiceAudio = null;
   function speak(text) {
+    if (voiceAudio) voiceAudio.pause();
+    if (VOICES[text]) {
+      if ('speechSynthesis' in window) speechSynthesis.cancel();
+      voiceAudio = new Audio(VOICES[text]);
+      voiceAudio.play().catch(() => speakTTS(text));
+      return;
+    }
+    speakTTS(text);
+  }
+
+  function speakTTS(text) {
     try {
       speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text.replace(/\s*\/\s*/g, ', '));

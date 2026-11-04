@@ -76,6 +76,20 @@
     @media (max-width: 420px) { .pair { grid-template-columns: 1fr; } }
     .photo-preview { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--r-inner); background: var(--surface-soft) center / cover no-repeat; display: grid; place-items: center; color: var(--muted); margin-bottom: 8px; }
 
+    .tabs { display: flex; gap: 6px; background: var(--bg-soft); border-radius: var(--r-pill); padding: 4px; margin-bottom: 14px; }
+    .tabs button { flex: 1; border: 0; border-radius: var(--r-pill); padding: 10px; background: transparent; cursor: pointer; font-size: 14px; font-weight: 500; }
+    .tabs button.on { background: var(--dark); color: #fff; }
+    .phrase { padding: 14px 0; border-top: 1px solid var(--line); }
+    .phrase:first-of-type { border-top: 0; }
+    .phrase .ko { font-size: 17px; font-weight: 600; }
+    .phrase .sub { font-size: 13.5px; color: var(--muted); }
+    .phrase .status { font-size: 12.5px; margin-top: 4px; color: var(--muted); }
+    .phrase .status.has { color: var(--walk); font-weight: 600; }
+    .phrase .actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+    .btn.rec { background: var(--danger); color: #fff; }
+    .rec-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #fff; margin-right: 6px; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0.25; } }
+
     .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); transform: translateX(-50%); max-width: calc(100% - 32px); background: var(--dark); color: #fff; padding: 12px 18px; border-radius: 18px; font-size: 14px; box-shadow: 0 10px 30px rgba(32, 44, 80, 0.2); z-index: 10; }
     .toast.error { background: var(--danger); }
     .center { text-align: center; padding: 40px 0; color: var(--text-2); }
@@ -84,14 +98,14 @@
 <body>
   <div class="wrap">
     <header>
-      <h1>장소 관리</h1>
+      <h1 id="title">장소 관리</h1>
       <a href="index.html">사이트 보기 ›</a>
     </header>
     <main id="root"></main>
   </div>
   <div id="toast" class="toast" hidden></div>
 
-  <!-- 지역 목록(DATA.areas)을 쓰려고 불러와요. 장소 목록은 GitHub에서 최신본을 직접 읽어요. -->
+  <!-- 지역 목록(DATA.areas)·문장 목록(DATA.phrases)을 쓰려고 불러와요. 장소·녹음 목록은 GitHub에서 최신본을 직접 읽어요. -->
   <script src="places.js"></script>
   <script src="data.js"></script>
   <script>
@@ -104,8 +118,13 @@
     const PHOTO_MAX = 1200; // 업로드 사진 긴 변 최대 px
     const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
     const TOKEN_KEY = 'seoul-admin-token';
+    const VOICES_PATH = 'voices.js';
+    const VOICE_DIR = 'audio/phrases';
+    const VOICE_RATE = 22050; // 녹음 저장 샘플레이트 (WAV, 모노)
+    const VOICE_MAX_SEC = 10; // 녹음 최대 길이
 
     const AREAS = window.DATA.areas;
+    const PHRASES = (window.DATA.phrases || []).flatMap((g) => g.items.map((p) => ({ ...p, group: g.title.ko })));
     const KINDS = [
       { id: 'eat', label: '먹기', emoji: '🍜' },
       { id: 'see', label: '구경 · 쇼핑', emoji: '📷' },
@@ -123,6 +142,10 @@
       editing: null, // { index: -1(새 장소) | n, draft, photoBlob, photoUrl }
       busy: false,
       loadError: null,
+      tab: location.hash === '#voices' ? 'voices' : 'places',
+      voices: null, // { 한글 문장: 파일 경로 }
+      voicesSha: null,
+      rec: null, // { ko, phase: 'recording' | 'review' | 'saving', recorder, stream, timer, blob, url }
     };
 
     /* ---------------- 도우미 ---------------- */
@@ -267,15 +290,307 @@
       }
     }
 
+    /* ---------------- voices.js 읽기/쓰기 ---------------- */
+    function parseVoices(text) {
+      const start = text.indexOf('{', text.indexOf('window.VOICES'));
+      const end = text.lastIndexOf('}');
+      return JSON.parse(text.slice(start, end + 1).replace(/,(\s*)\}$/, '$1}'));
+    }
+
+    function serializeVoices(voices) {
+      // data.js의 문장 순서대로, 그 밖의 것(문장이 바뀐 옛 녹음)은 뒤에
+      const keys = PHRASES.map((p) => p.ko).filter((k) => voices[k]);
+      for (const k of Object.keys(voices)) if (!keys.includes(k)) keys.push(k);
+      return (
+        `/* =========================================================\n` +
+        ` * Simple Korean 녹음 — admin.html(관리자 페이지)이 자동으로 고치는 파일이에요.\n` +
+        ` * "한글 문장": "녹음 파일 경로". 여기 없는 문장은 휴대폰 목소리가 읽어줘요.\n` +
+        ` * data.js의 문장(ko)을 고치면 녹음이 연결되지 않으니 다시 녹음해주세요.\n` +
+        ` * ========================================================= */\n` +
+        `window.VOICES = {` +
+        (keys.length ? '\n' + keys.map((k) => `  ${JSON.stringify(k)}: ${JSON.stringify(voices[k])}`).join(',\n') + '\n' : '') +
+        `};\n`
+      );
+    }
+
+    async function loadVoices() {
+      try {
+        const file = await gh(`contents/${VOICES_PATH}?ref=${BRANCH}`);
+        state.voices = parseVoices(b64ToUtf8(file.content));
+        state.voicesSha = file.sha;
+      } catch (err) {
+        if (err.status !== 404) throw err;
+        state.voices = {}; // 아직 voices.js가 없으면 첫 저장 때 만들어요
+        state.voicesSha = null;
+      }
+    }
+
+    async function saveVoices(voices, message) {
+      const res = await gh(`contents/${VOICES_PATH}`, {
+        method: 'PUT',
+        body: JSON.stringify({ message, content: utf8ToB64(serializeVoices(voices)), ...(state.voicesSha ? { sha: state.voicesSha } : {}), branch: BRANCH }),
+      });
+      state.voices = voices;
+      state.voicesSha = res.content.sha;
+    }
+
+    async function uploadVoice(blob, rom) {
+      const slug = (rom || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'phrase';
+      const path = `${VOICE_DIR}/${slug}-${Date.now().toString(36)}.wav`;
+      await gh(`contents/${path}`, {
+        method: 'PUT',
+        body: JSON.stringify({ message: `녹음 추가: ${path.split('/').pop()}`, content: await blobToB64(blob), branch: BRANCH }),
+      });
+      return path;
+    }
+
+    // 다시 녹음하거나 지울 때 옛 파일 정리 (실패해도 사이트에는 영향 없어서 조용히 넘어가요)
+    async function deleteFile(path, message) {
+      try {
+        const file = await gh(`contents/${path}?ref=${BRANCH}`);
+        await gh(`contents/${path}`, { method: 'DELETE', body: JSON.stringify({ message, sha: file.sha, branch: BRANCH }) });
+      } catch (err) {
+        console.warn('옛 녹음 파일을 지우지 못했어요', path, err);
+      }
+    }
+
+    /* ---------------- 녹음 → WAV ----------------
+     * 휴대폰마다 녹음 형식이 달라서(아이폰 mp4, 안드로이드 webm) 어디서나 재생되는 WAV로 바꿔 저장해요.
+     * 앞뒤 무음은 잘라내고, 모노 22kHz라 한 문장에 100KB 안팎이에요. */
+    async function toWav(blob) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AC();
+      let buf;
+      try {
+        const data = await blob.arrayBuffer();
+        buf = await new Promise((resolve, reject) => ctx.decodeAudioData(data, resolve, reject));
+      } finally {
+        ctx.close && ctx.close();
+      }
+
+      // 모노로 섞기
+      const n = buf.length;
+      const mono = new Float32Array(n);
+      for (let c = 0; c < buf.numberOfChannels; c++) {
+        const ch = buf.getChannelData(c);
+        for (let i = 0; i < n; i++) mono[i] += ch[i] / buf.numberOfChannels;
+      }
+
+      // 앞뒤 무음 자르기 (앞뒤 0.15초 여유)
+      let peak = 0;
+      for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(mono[i]));
+      if (peak < 0.01) throw new Error('silent');
+      const th = peak * 0.08;
+      let a = 0, b = n - 1;
+      while (a < n && Math.abs(mono[a]) < th) a++;
+      while (b > a && Math.abs(mono[b]) < th) b--;
+      const pad = Math.round(buf.sampleRate * 0.15);
+      a = Math.max(0, a - pad);
+      b = Math.min(n, b + pad);
+
+      // 22kHz로 줄이기 + 소리 크기 맞추기
+      const outLen = Math.max(1, Math.round(((b - a) * VOICE_RATE) / buf.sampleRate));
+      const gain = Math.min(4, 0.9 / peak);
+      const out = new Int16Array(outLen);
+      const step = buf.sampleRate / VOICE_RATE;
+      for (let i = 0; i < outLen; i++) {
+        const pos = a + i * step;
+        const j = Math.floor(pos), f = pos - j;
+        const v = ((mono[j] || 0) * (1 - f) + (mono[j + 1] || 0) * f) * gain;
+        out[i] = Math.max(-1, Math.min(1, v)) * 0x7fff;
+      }
+
+      const header = new DataView(new ArrayBuffer(44));
+      const str = (o, s) => [...s].forEach((ch, k) => header.setUint8(o + k, ch.charCodeAt(0)));
+      str(0, 'RIFF'); header.setUint32(4, 36 + out.byteLength, true); str(8, 'WAVE');
+      str(12, 'fmt '); header.setUint32(16, 16, true); header.setUint16(20, 1, true); header.setUint16(22, 1, true);
+      header.setUint32(24, VOICE_RATE, true); header.setUint32(28, VOICE_RATE * 2, true); header.setUint16(32, 2, true); header.setUint16(34, 16, true);
+      str(36, 'data'); header.setUint32(40, out.byteLength, true);
+      return new Blob([header, out], { type: 'audio/wav' });
+    }
+
+    let player = null;
+    function play(src) {
+      if (player) player.pause();
+      player = new Audio(src);
+      player.play().catch(() => toast('재생하지 못했어요.', true));
+    }
+
+    // 저장된 녹음 듣기: 사이트 배포 전에도 들리도록 GitHub에서 바로 받아와요
+    async function playSaved(path) {
+      try {
+        const file = await gh(`contents/${path}?ref=${BRANCH}`);
+        const bin = atob(file.content.replace(/\s/g, ''));
+        play(URL.createObjectURL(new Blob([Uint8Array.from(bin, (c) => c.charCodeAt(0))], { type: 'audio/wav' })));
+      } catch (err) {
+        console.error(err);
+        toast('녹음을 불러오지 못했어요.', true);
+      }
+    }
+
+    async function startRecording(ko) {
+      if (state.rec) {
+        cancelRecording();
+        render();
+      }
+      if (!navigator.mediaDevices || !window.MediaRecorder) return toast('이 브라우저에서는 녹음이 안 돼요. 대신 "파일 올리기"로 음성 메모를 올려주세요.', true);
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      } catch {
+        return toast('마이크를 쓸 수 없어요. 브라우저 설정에서 마이크를 허용해주세요.', true);
+      }
+      const chunks = [];
+      const recorder = new MediaRecorder(stream);
+      const rec = { ko, phase: 'recording', recorder, stream };
+      recorder.ondataavailable = (e) => e.data.size && chunks.push(e.data);
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        clearTimeout(rec.timer);
+        if (state.rec !== rec) return; // 취소됨
+        await useAudio(new Blob(chunks, { type: recorder.mimeType }), ko);
+      };
+      rec.timer = setTimeout(() => recorder.state === 'recording' && recorder.stop(), VOICE_MAX_SEC * 1000);
+      state.rec = rec;
+      recorder.start();
+      render();
+    }
+
+    // 녹음이나 올린 파일 → WAV로 바꿔서 "들어보고 저장" 단계로
+    async function useAudio(blob, ko) {
+      try {
+        const wav = await toWav(blob);
+        if (state.rec && state.rec.url) URL.revokeObjectURL(state.rec.url);
+        state.rec = { ko, phase: 'review', blob: wav, url: URL.createObjectURL(wav) };
+        render();
+        play(state.rec.url);
+      } catch (err) {
+        console.error(err);
+        state.rec = null;
+        render();
+        toast(err.message === 'silent' ? '소리가 거의 안 들어갔어요. 마이크 가까이에서 다시 해주세요.' : '이 소리 파일은 읽지 못했어요.', true);
+      }
+    }
+
+    function cancelRecording() {
+      const r = state.rec;
+      if (!r) return;
+      state.rec = null;
+      if (r.recorder && r.recorder.state === 'recording') r.recorder.stop();
+      if (r.url) URL.revokeObjectURL(r.url);
+    }
+
+    async function saveRecording() {
+      const r = state.rec;
+      if (!r || r.phase !== 'review' || state.busy) return;
+      const phrase = PHRASES.find((p) => p.ko === r.ko) || {};
+      const old = state.voices[r.ko];
+      state.busy = true;
+      r.phase = 'saving';
+      render();
+      try {
+        const path = await uploadVoice(r.blob, phrase.rom);
+        await saveVoices({ ...state.voices, [r.ko]: path }, `녹음 ${old ? '교체' : '추가'}: ${r.ko}`);
+        if (old) await deleteFile(old, `옛 녹음 삭제: ${old.split('/').pop()}`);
+        URL.revokeObjectURL(r.url);
+        state.rec = null;
+        toast('저장했어요! 1~2분 뒤 사이트에서 이 목소리로 나와요.');
+      } catch (err) {
+        console.error(err);
+        r.phase = 'review';
+        toast(explain(err), true);
+      } finally {
+        state.busy = false;
+        render();
+      }
+    }
+
+    async function removeVoice(ko) {
+      const old = state.voices[ko];
+      if (!old || state.busy || !confirm(`"${ko}" 녹음을 지울까요?\n지우면 휴대폰 목소리가 대신 읽어줘요.`)) return;
+      state.busy = true;
+      render();
+      try {
+        const next = { ...state.voices };
+        delete next[ko];
+        await saveVoices(next, `녹음 삭제: ${ko}`);
+        await deleteFile(old, `녹음 파일 삭제: ${old.split('/').pop()}`);
+        toast('지웠어요.');
+      } catch (err) {
+        console.error(err);
+        toast(explain(err), true);
+      } finally {
+        state.busy = false;
+        render();
+      }
+    }
+
     /* ---------------- 화면 ---------------- */
     function render() {
+      document.getElementById('title').textContent = state.tab === 'voices' ? '녹음 관리' : '장소 관리';
       if (!state.token) return renderToken();
       if (state.loadError)
         return (root.innerHTML = `<section class="card"><h2>불러오지 못했어요</h2><p class="muted" style="margin-bottom:14px">${esc(state.loadError)}</p>
           <div class="row"><button class="btn primary" data-action="retry">다시 시도</button><button class="btn" data-action="logout">토큰 지우기</button></div></section>`);
-      if (!state.places) return (root.innerHTML = `<div class="center">불러오는 중…</div>`);
+      if (!state.places || !state.voices) return (root.innerHTML = `<div class="center">불러오는 중…</div>`);
       if (state.editing) return renderForm();
+      if (state.tab === 'voices') return renderVoices();
       renderList();
+    }
+
+    const tabs = () => `
+      <nav class="tabs">
+        <button class="${state.tab === 'places' ? 'on' : ''}" data-action="tab" data-id="places">📍 장소</button>
+        <button class="${state.tab === 'voices' ? 'on' : ''}" data-action="tab" data-id="voices">🎙 Simple Korean 녹음</button>
+      </nav>`;
+
+    function renderVoices() {
+      const done = PHRASES.filter((p) => state.voices[p.ko]).length;
+      const groups = [...new Set(PHRASES.map((p) => p.group))];
+      const row = (p) => {
+        const has = state.voices[p.ko];
+        const r = state.rec && state.rec.ko === p.ko ? state.rec : null;
+        let actions;
+        if (r && r.phase === 'recording') {
+          actions = `<button class="btn small rec" data-action="rec-stop"><i class="rec-dot"></i>녹음 중… 멈추기</button>
+            <button class="btn small" data-action="rec-cancel">취소</button>`;
+        } else if (r) {
+          const saving = r.phase === 'saving';
+          actions = `<button class="btn small" data-action="rec-play" ${saving ? 'disabled' : ''}>▶ 방금 녹음 듣기</button>
+            <button class="btn small primary" data-action="rec-save" ${saving ? 'disabled' : ''}>${saving ? '저장 중…' : '이걸로 저장'}</button>
+            <button class="btn small" data-action="rec-start" data-ko="${esc(p.ko)}" ${saving ? 'disabled' : ''}>다시 녹음</button>
+            <button class="btn small" data-action="rec-cancel" ${saving ? 'disabled' : ''}>취소</button>`;
+        } else {
+          const off = state.busy || !!state.rec ? 'disabled' : '';
+          actions = `${has ? `<button class="btn small" data-action="voice-play" data-ko="${esc(p.ko)}">▶ 듣기</button>` : ''}
+            <button class="btn small accent" data-action="rec-start" data-ko="${esc(p.ko)}" ${off}>🎙 ${has ? '다시 녹음' : '녹음'}</button>
+            <label class="btn small" style="display:inline-flex;align-items:center" ${off ? 'aria-disabled="true"' : ''}>파일 올리기<input type="file" name="voice" data-ko="${esc(p.ko)}" accept="audio/*" hidden ${off} /></label>
+            ${has ? `<button class="btn small danger" data-action="voice-delete" data-ko="${esc(p.ko)}" ${off}>삭제</button>` : ''}`;
+        }
+        return `
+          <div class="phrase">
+            <div class="ko" lang="ko">${esc(p.ko)}</div>
+            <div class="sub">${esc(p.rom)} · ${esc(p.en)}</div>
+            <div class="status ${has ? 'has' : ''}">${has ? '● 소희 목소리' : '휴대폰 목소리 (녹음 없음)'}</div>
+            <div class="actions">${actions}</div>
+          </div>`;
+      };
+      root.innerHTML = `
+        ${tabs()}
+        <section class="card">
+          <p class="muted">🎙 녹음을 누르고 문장을 말한 뒤 멈추기 → 들어보고 "이걸로 저장". 앞뒤 조용한 부분은 알아서 잘라요.
+            녹음이 없는 문장은 지금처럼 휴대폰 목소리가 읽어줘요. <b>${done} / ${PHRASES.length}</b> 녹음됨</p>
+        </section>
+        ${groups
+          .map(
+            (g) => `
+          <section class="card">
+            <h2>${esc(g)}</h2>
+            ${PHRASES.filter((p) => p.group === g).map(row).join('')}
+          </section>`
+          )
+          .join('')}
+        <p class="muted" style="text-align:center">문장 자체(한글·발음·뜻)는 data.js의 phrases에서 고쳐요 · <button class="btn small" data-action="logout">토큰 지우기</button></p>`;
     }
 
     function renderToken() {
@@ -302,6 +617,7 @@
       const counts = Object.fromEntries(AREAS.map((a) => [a.id, state.places.filter((p) => p.area === a.id).length]));
       const items = state.places.map((p, i) => ({ p, i })).filter(({ p }) => p.area === state.area);
       root.innerHTML = `
+        ${tabs()}
         <nav class="chips">
           ${AREAS.map((a) => `<button class="chip ${a.id === state.area ? 'on' : ''}" data-action="area" data-id="${a.id}">${esc(a.emoji)} ${esc(a.name.ko)} ${counts[a.id]}</button>`).join('')}
         </nav>
@@ -548,6 +864,35 @@
           state.editing.draft.photo = undefined;
           render();
           break;
+        case 'tab':
+          cancelRecording();
+          state.tab = el.dataset.id;
+          history.replaceState(null, '', state.tab === 'voices' ? '#voices' : location.pathname);
+          render();
+          window.scrollTo(0, 0);
+          break;
+        case 'rec-start':
+          startRecording(el.dataset.ko);
+          break;
+        case 'rec-stop':
+          if (state.rec && state.rec.recorder) state.rec.recorder.stop();
+          break;
+        case 'rec-cancel':
+          cancelRecording();
+          render();
+          break;
+        case 'rec-play':
+          if (state.rec && state.rec.url) play(state.rec.url);
+          break;
+        case 'rec-save':
+          saveRecording();
+          break;
+        case 'voice-play':
+          playSaved(state.voices[el.dataset.ko]);
+          break;
+        case 'voice-delete':
+          removeVoice(el.dataset.ko);
+          break;
         case 'cancel':
           clearPendingPhoto();
           state.editing = null;
@@ -557,6 +902,10 @@
     });
 
     root.addEventListener('change', async (ev) => {
+      if (ev.target.name === 'voice' && ev.target.files[0]) {
+        cancelRecording();
+        return useAudio(ev.target.files[0], ev.target.dataset.ko);
+      }
       if (ev.target.name !== 'photo' || !ev.target.files[0]) return;
       readForm();
       try {
@@ -576,7 +925,7 @@
     });
 
     window.addEventListener('beforeunload', (ev) => {
-      if (state.editing || state.busy) ev.preventDefault();
+      if (state.editing || state.busy || state.rec) ev.preventDefault();
     });
 
     async function start() {
@@ -584,7 +933,7 @@
       render();
       if (!state.token) return;
       try {
-        await loadPlaces();
+        await Promise.all([loadPlaces(), loadVoices()]);
       } catch (err) {
         console.error(err);
         state.loadError = explain(err);
