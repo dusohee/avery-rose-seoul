@@ -200,8 +200,8 @@ window.DATA = {
       name: { ko: '강남', en: 'Gangnam' },
       tagline: { ko: '번화가 · 쇼핑', en: 'Downtown buzz · Shopping' },
       intro: {
-        ko: '서울에서 제일 북적이는 번화가. 큰길 따라 가게, 카페, 식당이 줄지어 있어.',
-        en: 'The busiest district in Seoul, lined with shops, cafés and restaurants.',
+        ko: '서울에서 제일 북적이는 번화가. 큰길 따라 가게, 카페, 식당이 줄지어 있어. 소희가 일하는 곳이기도 해!',
+        en: 'The busiest district in Seoul, lined with shops, cafés and restaurants. It\'s also where Sohee works!',
       },
       tags: { ko: ['쇼핑', '카페'], en: ['Shopping', 'Cafés'] },
       notice: { ko: '2호선은 순환선이라 방향 확인!', en: 'Line 2 is a loop — check the direction!' },
@@ -416,5 +416,11 @@ window.DATA = {
     { file: 'places/benjamin-poke.jpg', artist: 'Andy Li', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Salmon_Poke_Bowl_(S)_with_Spicy_mayo_sauce_-_Kitokito.jpg' },
     { file: 'areas/museum.jpg', artist: 'Jinah78', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Front_view_of_national_museum_of_korea.jpg' },
     { file: 'places/hongdae-street.jpg', artist: 'Minseong Kim', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Hongdae_Street.jpg' },
+    { file: 'places/marronnier-park.jpg', artist: 'Seefooddiet', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Marronnier_Park_01.jpg' },
+    // 아래 4장은 가게 사진이 아니라 대표 메뉴·분위기 사진
+    { file: 'places/oiji.jpg', artist: 'titanium22', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Korean_stew-Sundubu_jjigae-05.jpg' },
+    { file: 'places/munhwa-sikdang.jpg', artist: 'Philip Mallis', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Pork_tagliatelle_pasta_dish_at_restaurant_in_Rome,_Italy.jpg' },
+    { file: 'places/seongbuk-postcard.jpg', artist: 'Derek Harper', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Postcards_at_Mevagissey_-_geograph.org.uk_-_1389045.jpg' },
+    { file: 'places/mongbru.jpg', artist: 'Kim Sanso', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Latte_art_4.jpg' },
   ],
 };

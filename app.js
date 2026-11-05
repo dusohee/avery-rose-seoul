@@ -874,4 +874,37 @@
 
   window.addEventListener('hashchange', render);
   render();
+
+  /* ---------- 자동 새로고침 ----------
+   * 관리자 페이지나 코드로 고친 내용이 배포되면, 열려 있는 사이트가 알아서 새로고침돼요.
+   * 1분마다 + 앱으로 다시 돌아올 때 파일을 확인하고, 바뀌었으면 보던 화면·스크롤 그대로 다시 불러와요.
+   * ---------------------------------- */
+  const WATCH = ['index.html', 'places.js', 'voices.js', 'data.js', 'app.js', 'styles.css'];
+  let known = null; // 처음 확인했을 때의 파일 내용
+
+  // 새로고침 전 스크롤 위치 복원
+  try {
+    const y = sessionStorage.getItem('reloadScrollY');
+    if (y !== null) { sessionStorage.removeItem('reloadScrollY'); window.scrollTo(0, +y); }
+  } catch (e) {}
+
+  async function checkForUpdate() {
+    if (location.protocol === 'file:' || !navigator.onLine) return;
+    try {
+      // cache: 'reload' → 항상 서버에서 받고, 브라우저 캐시도 새 파일로 갈아끼움 (새로고침하면 바로 새 내용)
+      const texts = await Promise.all(WATCH.map((f) =>
+        fetch(f, { cache: 'reload' }).then((r) => (r.ok ? r.text() : Promise.reject()))));
+      if (!known) { known = texts; return; }
+      if (texts.some((s, i) => s !== known[i])) {
+        // 환율 입력 중이면 방해하지 않고 다음 확인 때 새로고침
+        if (document.activeElement && document.activeElement.id === 'fx-input') return;
+        try { sessionStorage.setItem('reloadScrollY', String(window.scrollY)); } catch (e) {}
+        location.reload();
+      }
+    } catch (e) {} // 인터넷이 잠깐 끊겨도 조용히 넘어가기
+  }
+
+  checkForUpdate();
+  setInterval(() => { if (!document.hidden) checkForUpdate(); }, 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
 })();
