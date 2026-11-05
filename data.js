@@ -72,8 +72,8 @@ window.DATA = {
       name: { ko: '남대문시장', en: 'Namdaemun Market' },
       tagline: { ko: '호텔에서 걸어서 20분', en: '20 min walk from the hotel' },
       intro: {
-        ko: '600년 넘은 서울에서 가장 오래된 전통시장. 길거리 음식, 갈치조림 골목, 온갖 잡화까지 구경거리가 끝이 없어.',
-        en: "Seoul's oldest traditional market, over 600 years old. Street food, a braised-fish alley, and endless stalls.",
+        ko: '600년 넘은 서울에서 가장 오래된 전통시장. 길거리 음식부터 온갖 잡화까지 구경거리가 끝이 없어.',
+        en: "Seoul's oldest traditional market, over 600 years old. Street food and endless stalls.",
       },
       tags: { ko: ['시장', '길거리 음식'], en: ['Market', 'Street food'] },
       notice: { ko: '저녁엔 일찍 닫고 일요일은 대부분 휴무', en: 'Closes early in the evening, mostly closed Sundays' },
