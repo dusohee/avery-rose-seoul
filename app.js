@@ -1,4 +1,4 @@
-/* Avery의 서울 — 화면 렌더링 (해시 라우팅: #/ · #/area/:id · #/taxi · #/info) */
+/* Avery의 서울 — 화면 렌더링 (해시 라우팅: #/ · #/area/:id · #/taxi · #/info · #/korean · #/fx · #/album) */
 (function () {
   const D = window.DATA;
   const app = document.getElementById('app');
@@ -19,6 +19,7 @@
       howToGet: '호텔에서 가는 법',
       picks: '소희의 추천 장소',
       mapTitle: '추천 장소 지도',
+      course: '산행 코스',
       mapHint: '핀을 누르면 구글·네이버 지도로 열 수 있어요',
       all: '전체',
       eat: '먹기',
@@ -53,6 +54,28 @@
       korean: 'Simple Korean',
       koreanLead: '발음이 어려우면 화면을 그대로 보여줘도 돼요. 🔊를 누르면 한국어로 읽어줘요.',
       listen: '듣기',
+      album: '앨범',
+      albumLead: '한국에서 찍은 사진을 모아요. 사진을 누르면 크게 보고 저장할 수 있어요.',
+      albumAdd: '사진 올리기',
+      albumEmpty: '아직 사진이 없어요. 첫 사진을 올려주세요!',
+      albumNew: '새 사진',
+      albumWhere: '어디서 찍었어요?',
+      albumFinding: '위치 찾는 중…',
+      albumRemove: '빼기',
+      albumUpload: (n) => `${n}장 올리기`,
+      albumUploading: (i, n) => `올리는 중… ${i} / ${n}`,
+      albumDone: '올렸어요! 이제 모두의 앨범에 보여요.',
+      albumLoading: '사진을 불러오는 중…',
+      albumLoadFail: '사진을 불러오지 못했어요. 인터넷 연결을 확인해주세요.',
+      albumSetup: '앨범 준비 중이에요. 곧 열릴게요!',
+      albumFail: '올리지 못했어요. 인터넷 연결을 확인하고 다시 해주세요.',
+      albumNotImage: '사진을 읽지 못했어요. 다른 사진으로 해주세요.',
+      close: '닫기',
+      prev: '이전 사진',
+      next: '다음 사진',
+      savePhotos: '사진 앱에 저장',
+      download: '다운로드',
+      saveRetry: '준비됐어요. 한 번 더 눌러주세요.',
     },
     en: {
       city: 'Seoul, South Korea',
@@ -65,6 +88,7 @@
       howToGet: 'From the hotel',
       picks: "Sohee's picks",
       mapTitle: 'Picks on the map',
+      course: 'Hiking course',
       mapHint: 'Tap a pin to open it in Google Maps or Naver Map',
       all: 'All',
       eat: 'Eat',
@@ -99,6 +123,28 @@
       korean: 'Simple Korean',
       koreanLead: "If it's hard to pronounce, just show the screen. Tap 🔊 to hear it in Korean.",
       listen: 'Listen',
+      album: 'Album',
+      albumLead: 'Our photos from Korea. Tap a photo to see it big and save it.',
+      albumAdd: 'Add photos',
+      albumEmpty: 'No photos yet — add the first one!',
+      albumNew: 'New photos',
+      albumWhere: 'Where was this?',
+      albumFinding: 'Finding the place…',
+      albumRemove: 'Remove',
+      albumUpload: (n) => `Upload ${n} photo${n === 1 ? '' : 's'}`,
+      albumUploading: (i, n) => `Uploading… ${i} / ${n}`,
+      albumDone: 'Uploaded! Everyone can see them now.',
+      albumLoading: 'Loading photos…',
+      albumLoadFail: "Couldn't load photos. Please check your connection.",
+      albumSetup: 'The album is almost ready — check back soon!',
+      albumFail: "Couldn't upload. Check your connection and try again.",
+      albumNotImage: "Couldn't read that photo. Please try another one.",
+      close: 'Close',
+      prev: 'Previous photo',
+      next: 'Next photo',
+      savePhotos: 'Save to Photos',
+      download: 'Download',
+      saveRetry: 'Ready — tap once more.',
     },
   };
 
@@ -122,6 +168,10 @@
     fx: svg(`<path d="M5 8.5h13.5M15 5l3.5 3.5L15 12M19 15.5H5.5M9 12l-3.5 3.5L9 19" ${stroke}/>`),
     chat: svg('<path d="M12 4c4.97 0 9 3.13 9 7s-4.03 7-9 7c-.9 0-1.77-.1-2.6-.3L5 19.5l1.2-3.4C4.2 14.8 3 13 3 11c0-3.87 4.03-7 9-7z"/>'),
     sound: svg(`<path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" ${stroke}/>`),
+    photo: svg('<path fill-rule="evenodd" d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm1.5 13h11l-3.6-4.8-2.7 3.4-1.9-2.3zM8.8 7a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6z"/>'),
+    plus: svg(`<path d="M12 5v14M5 12h14" ${stroke}/>`),
+    close: svg(`<path d="M6 6l12 12M18 6 6 18" ${stroke}/>`),
+    download: svg(`<path d="M12 4v11M7 10.5l5 5 5-5M5 19.5h14" ${stroke}/>`),
     train: svg('<path fill-rule="evenodd" d="M8 3h8a3 3 0 0 1 3 3v9a3 3 0 0 1-2.2 2.9L18.5 21h-2.3l-1.4-3h-5.6l-1.4 3H5.5l1.7-3.1A3 3 0 0 1 5 15V6a3 3 0 0 1 3-3zm-1 4v4h10V7zm1.5 6.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm7 0a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/>'),
   };
 
@@ -176,9 +226,10 @@
       </a>`;
     return `
       <nav class="tabbar">
-        ${tab('#/', 'home', ICON.home, !['info', 'korean', 'fx'].includes(page))}
+        ${tab('#/', 'home', ICON.home, !['info', 'korean', 'fx', 'album'].includes(page))}
         ${tab('#/korean', 'korean', ICON.chat, page === 'korean')}
         ${tab('#/fx', 'fx', ICON.fx, page === 'fx')}
+        ${tab('#/album', 'album', ICON.photo, page === 'album')}
         ${tab('#/info', 'info', ICON.info, page === 'info')}
       </nav>`;
   }
@@ -308,6 +359,8 @@
         </div>
       </section>
 
+      ${courseBlock(a)}
+
       ${mapBlock}
 
       <section class="block">
@@ -316,6 +369,23 @@
         <div class="stack">${list}</div>
       </section>
     `;
+  }
+
+  // 산행 코스: 들르는 곳을 순서대로
+  function courseBlock(a) {
+    const c = a.course;
+    if (!c || !c.steps || !c.steps.length) return '';
+    const step = (s) => `
+        <li>
+          <h3>${esc(L(s.name))}</h3>
+          ${s.note ? `<p>${esc(L(s.note))}</p>` : ''}
+        </li>`;
+    return `
+      <section class="block">
+        <h2 class="block-title">${t('course')}</h2>
+        ${c.meta ? `<p class="course-meta">${esc(L(c.meta))}</p>` : ''}
+        <ol class="course">${c.steps.map(step).join('')}</ol>
+      </section>`;
   }
 
   // 길거리 음식 도감: 옆으로 넘기는 작은 카드
@@ -810,6 +880,398 @@
     `;
   }
 
+  /* ---------- 앨범 ----------
+   * 3열 그리드 → 누르면 크게 보기 → 사진 앱에 저장(아이폰) / 다운로드(그 밖)
+   * 사진과 목록은 Supabase에 있어요 (album-store.js). 앨범 화면을 열 때와 보고 있는 동안 1분마다 새로 불러와요.
+   * -------------------------- */
+  const UP = window.AlbumStore;
+  const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  let albumList = null; // null = 아직 못 불러옴
+  let albumError = false;
+  let albumLoadedAt = 0;
+
+  const albumItems = () => albumList || [];
+
+  async function loadAlbum() {
+    if (!UP.ready) return;
+    albumLoadedAt = Date.now();
+    try {
+      const list = await UP.list();
+      const changed = JSON.stringify(list) !== JSON.stringify(albumList);
+      albumList = list;
+      albumError = false;
+      if (changed && location.hash === '#/album') render();
+    } catch (e) {
+      albumError = true;
+      if (!albumList && location.hash === '#/album') render();
+    }
+  }
+
+  // 앨범 화면에 있으면 1분마다 + 앱으로 돌아올 때 새 사진 확인
+  setInterval(() => { if (!document.hidden && location.hash === '#/album') loadAlbum(); }, 60 * 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && location.hash === '#/album') loadAlbum(); });
+
+  function albumDate(date, long) {
+    const d = new Date(date);
+    if (!date || isNaN(d)) return '';
+    const loc = lang === 'en' ? 'en-US' : 'ko-KR';
+    const day = d.toLocaleDateString(loc, long ? { year: 'numeric', month: 'long', day: 'numeric' } : { month: 'short', day: 'numeric' });
+    return long ? `${day} · ${d.toLocaleTimeString(loc, { hour: 'numeric', minute: '2-digit' })}` : day;
+  }
+
+  const albumFileName = (p) => `seoul-${(p.date || '').replace(/[-:]/g, '').replace('T', '-') || 'photo'}.jpg`;
+
+  function renderAlbum() {
+    if (UP.ready && Date.now() - albumLoadedAt > 30 * 1000) loadAlbum();
+    const items = albumItems();
+    const grid = !UP.configured
+      ? `<p class="empty">${t('albumSetup')}</p>`
+      : !UP.ready || (albumError && !albumList)
+      ? `<p class="empty">${t('albumLoadFail')}</p>`
+      : !albumList
+      ? `<p class="empty">${t('albumLoading')}</p>`
+      : items.length
+      ? `<ul class="album-grid">${items
+          .map(
+            (p, i) => `
+          <li>
+            <button class="album-cell" data-action="album-open" data-i="${i}" aria-label="${esc([p.place, albumDate(p.date)].filter(Boolean).join(', '))}">
+              <span class="album-thumb"><img src="${esc(p.thumb || p.src)}" alt="" loading="lazy" /></span>
+              ${p.place ? `<span class="album-place">${esc(p.place)}</span>` : ''}
+              <span class="album-date">${albumDate(p.date)}</span>
+            </button>
+          </li>`
+          )
+          .join('')}</ul>`
+      : `<p class="empty">${t('albumEmpty')}</p>`;
+
+    return `
+      ${header(t('album'), true)}
+      <div class="album-head">
+        <h1 class="page-title">${t('album')}</h1>
+        ${
+          UP.ready
+            ? `<label class="btn btn-accent album-add">
+                ${ICON.plus}${t('albumAdd')}
+                <input id="album-file" class="album-file" type="file" accept="image/*" multiple />
+              </label>`
+            : ''
+        }
+      </div>
+      <p class="page-lead">${t('albumLead')}</p>
+      ${grid}
+    `;
+  }
+
+  // 화면을 다시 그려도 사라지지 않도록, 올리기 시트·크게 보기는 #app 밖(body)에 따로 띄워요
+  const lockScroll = () => document.body.classList.toggle('no-scroll', !!(upState || lb));
+
+  let toastTimer;
+  function toast(msg) {
+    let el = document.getElementById('toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'toast';
+      el.className = 'toast';
+      el.setAttribute('role', 'status');
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => (el.hidden = true), 4000);
+  }
+
+  /* 올리기 시트: 고른 사진마다 날짜·장소를 확인하고 한 번에 올려요 */
+  let upState = null; // { items: [{ id, file, url, date, place, ll, finding, touched }], busy, status, error }
+  let sheetEl = null;
+
+  function openUpload(files) {
+    files = files.filter((f) => /^image\//.test(f.type) || /\.(jpe?g|png|heic|webp)$/i.test(f.name));
+    if (!files.length || upState) return;
+    upState = {
+      busy: false, status: '', error: false,
+      items: files.map((file, id) => ({ id, file, url: URL.createObjectURL(file), date: UP.fallbackDate(file), place: '', ll: null, finding: false, touched: false })),
+    };
+    sheetEl = document.createElement('div');
+    sheetEl.className = 'sheet-back';
+    sheetEl.addEventListener('click', onSheetClick);
+    sheetEl.addEventListener('input', onSheetInput);
+    document.body.appendChild(sheetEl);
+    lockScroll();
+    drawSheet();
+    readMeta(upState);
+  }
+
+  function closeUpload() {
+    if (!upState) return;
+    upState.items.forEach((it) => URL.revokeObjectURL(it.url));
+    sheetEl.remove();
+    upState = sheetEl = null;
+    lockScroll();
+  }
+
+  function drawSheet() {
+    const u = upState;
+    const off = u.busy ? 'disabled' : '';
+    sheetEl.innerHTML = `
+      <div class="sheet" role="dialog" aria-modal="true" aria-label="${t('albumNew')}">
+        <div class="sheet-head">
+          <h2>${t('albumNew')} <span class="cnt">${u.items.length}</span></h2>
+          <button class="icon-btn" data-up="close" aria-label="${t('close')}" ${off}>${ICON.close}</button>
+        </div>
+        <ul class="up-list">
+          ${u.items
+            .map(
+              (it) => `
+            <li class="up-row" data-id="${it.id}">
+              <img class="up-thumb" src="${it.url}" alt="" />
+              <div class="up-fields">
+                <input type="date" data-field="date" value="${esc(it.date.slice(0, 10))}" ${off} />
+                <input type="text" data-field="place" value="${esc(it.place)}" placeholder="${it.finding ? t('albumFinding') : t('albumWhere')}" ${off} />
+              </div>
+              <button class="icon-btn up-remove" data-up="remove" aria-label="${t('albumRemove')}" ${off}>${ICON.close}</button>
+            </li>`
+            )
+            .join('')}
+        </ul>
+        ${u.error ? `<p class="up-error" role="alert">${esc(u.status)}</p>` : ''}
+        <button class="btn btn-dark up-go" data-up="go" ${off}>${u.busy ? esc(u.status) : t('albumUpload')(u.items.length)}</button>
+      </div>`;
+  }
+
+  // 시트를 다시 그리지 않고 한 줄만 고쳐요 (입력 중인 칸은 건드리지 않음)
+  function updateRow(it) {
+    const row = sheetEl && sheetEl.querySelector(`.up-row[data-id="${it.id}"]`);
+    if (!row) return;
+    const date = row.querySelector('[data-field="date"]');
+    const place = row.querySelector('[data-field="place"]');
+    if (document.activeElement !== date) date.value = it.date.slice(0, 10);
+    if (document.activeElement !== place) place.value = it.place;
+    place.placeholder = it.finding ? t('albumFinding') : t('albumWhere');
+  }
+
+  // 사진 속 날짜·GPS를 읽고, GPS가 있으면 장소 이름을 채워요
+  async function readMeta(u) {
+    for (const it of u.items) {
+      const ex = await UP.readExif(it.file);
+      if (upState !== u) return;
+      if (ex.date && !it.dateTouched) it.date = ex.date;
+      if (ex.ll) { it.ll = ex.ll; it.finding = true; }
+      updateRow(it);
+    }
+    for (const it of u.items) {
+      if (!it.ll) continue;
+      let name = '';
+      try { name = await UP.guessPlace(it.ll, lang, D.places); } catch (e) {}
+      if (upState !== u) return;
+      it.finding = false;
+      if (name && !it.touched) it.place = name;
+      updateRow(it);
+      await new Promise((r) => setTimeout(r, 1100)); // OpenStreetMap 주소 찾기는 1초에 한 번까지
+    }
+  }
+
+  function onSheetClick(e) {
+    const u = upState;
+    if (u.busy) return;
+    if (e.target === sheetEl) return closeUpload(); // 바깥 어두운 곳
+    const btn = e.target.closest('[data-up]');
+    if (!btn) return;
+    const action = btn.dataset.up;
+    if (action === 'close') closeUpload();
+    else if (action === 'go') doUpload();
+    else if (action === 'remove') {
+      const id = +btn.closest('.up-row').dataset.id;
+      const it = u.items.find((x) => x.id === id);
+      URL.revokeObjectURL(it.url);
+      u.items = u.items.filter((x) => x !== it);
+      if (!u.items.length) closeUpload();
+      else drawSheet();
+    }
+  }
+
+  function onSheetInput(e) {
+    const field = e.target.dataset.field;
+    const it = upState.items.find((x) => x.id === +e.target.closest('.up-row').dataset.id);
+    if (field === 'place') { it.place = e.target.value; it.touched = true; }
+    if (field === 'date' && e.target.value) { it.date = `${e.target.value}T${it.date.slice(11) || '12:00'}`; it.dateTouched = true; }
+  }
+
+  async function doUpload() {
+    const u = upState;
+    const progress = (i, n) => {
+      u.status = t('albumUploading')(Math.min(i + 1, n), n);
+      const btn = sheetEl.querySelector('.up-go');
+      if (btn) btn.textContent = u.status;
+    };
+    u.busy = true;
+    u.error = false;
+    progress(-1, u.items.length);
+    drawSheet();
+    try {
+      await UP.upload(u.items, progress);
+      await loadAlbum();
+      closeUpload();
+      toast(t('albumDone'));
+    } catch (err) {
+      console.error(err);
+      u.busy = false;
+      u.error = true;
+      u.status = err.message === 'decode' ? t('albumNotImage') : t('albumFail');
+      drawSheet();
+    }
+  }
+
+  /* 크게 보기: 좌우로 넘기기, 사진을 누르면 2배 확대(손가락으로 이동), 저장 */
+  let lb = null; // { i, items, el, file: { src, f } }
+
+  function openLightbox(i) {
+    lb = { i, items: albumItems(), el: document.createElement('div'), file: null };
+    lb.el.className = 'lb';
+    lb.el.setAttribute('role', 'dialog');
+    lb.el.setAttribute('aria-modal', 'true');
+    lb.el.addEventListener('click', onLbClick);
+    lb.el.addEventListener('touchstart', onLbTouchStart, { passive: true });
+    lb.el.addEventListener('touchend', onLbTouchEnd);
+    document.body.appendChild(lb.el);
+    lockScroll();
+    drawLightbox();
+  }
+
+  function closeLightbox() {
+    if (!lb) return;
+    lb.el.remove();
+    lb = null;
+    lockScroll();
+  }
+
+  function drawLightbox() {
+    const p = lb.items[lb.i];
+    const n = lb.items.length;
+    lb.el.innerHTML = `
+      <div class="lb-top">
+        <button class="lb-btn" data-lb="close" aria-label="${t('close')}">${ICON.close}</button>
+        <span class="lb-count">${lb.i + 1} / ${n}</span>
+      </div>
+      <div class="lb-stage">
+        <img class="lb-img" src="${esc(p.src)}" alt="${esc(p.place || '')}" data-lb="zoom" />
+      </div>
+      ${
+        n > 1
+          ? `<button class="lb-btn lb-nav lb-prev" data-lb="prev" aria-label="${t('prev')}" ${lb.i === 0 ? 'disabled' : ''}>${ICON.back}</button>
+             <button class="lb-btn lb-nav lb-next" data-lb="next" aria-label="${t('next')}" ${lb.i === n - 1 ? 'disabled' : ''}>${ICON.arrow}</button>`
+          : ''
+      }
+      <div class="lb-cap">
+        <div class="lb-meta">
+          ${p.place ? `<p class="lb-place">${ICON.pin}<span>${esc(p.place)}</span></p>` : ''}
+          <p class="lb-date">${albumDate(p.date, true)}</p>
+        </div>
+        <button class="btn btn-accent lb-save" data-lb="save">${ICON.download}${IS_IOS ? t('savePhotos') : t('download')}</button>
+      </div>`;
+    prefetchPhoto(p);
+  }
+
+  function lbGo(d) {
+    const i = lb.i + d;
+    if (i < 0 || i >= lb.items.length) return;
+    lb.i = i;
+    drawLightbox();
+  }
+
+  function lbZoom(e) {
+    const stage = lb.el.querySelector('.lb-stage');
+    const img = stage.querySelector('img');
+    if (stage.classList.contains('zoom')) {
+      stage.classList.remove('zoom');
+      img.style.width = '';
+      return;
+    }
+    const r = img.getBoundingClientRect();
+    const rx = (e.clientX - r.left) / r.width;
+    const ry = (e.clientY - r.top) / r.height;
+    img.style.width = r.width * 2 + 'px';
+    stage.classList.add('zoom');
+    stage.scrollLeft = rx * img.offsetWidth - stage.clientWidth / 2;
+    stage.scrollTop = ry * img.offsetHeight - stage.clientHeight / 2;
+  }
+
+  function onLbClick(e) {
+    const el = e.target.closest('[data-lb]');
+    const action = el ? el.dataset.lb : e.target.closest('.lb-stage') ? 'close' : '';
+    if (action === 'close') closeLightbox();
+    else if (action === 'prev') lbGo(-1);
+    else if (action === 'next') lbGo(1);
+    else if (action === 'zoom') lbZoom(e);
+    else if (action === 'save') savePhoto();
+  }
+
+  let touchX = null;
+  let touchY = null;
+  function onLbTouchStart(e) {
+    const zoomed = lb.el.querySelector('.lb-stage.zoom');
+    touchX = e.touches.length === 1 && !zoomed ? e.touches[0].clientX : null;
+    touchY = touchX === null ? null : e.touches[0].clientY;
+  }
+  function onLbTouchEnd(e) {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    touchX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) lbGo(dx < 0 ? 1 : -1);
+  }
+
+  // 아이폰 공유 시트는 누른 직후에만 열려서, 크게 볼 때 미리 사진 파일을 받아둬요
+  const photoBlob = (p) => fetch(p.src).then((r) => (r.ok ? r.blob() : Promise.reject(new Error('fetch'))));
+
+  function prefetchPhoto(p) {
+    if (lb.file && lb.file.src === p.src) return;
+    const file = { src: p.src, f: null };
+    lb.file = file;
+    photoBlob(p)
+      .then((b) => { file.f = new File([b], albumFileName(p), { type: 'image/jpeg' }); })
+      .catch(() => {});
+  }
+
+  async function savePhoto() {
+    const p = lb.items[lb.i];
+    let f = lb.file && lb.file.src === p.src ? lb.file.f : null;
+
+    // 아이폰·아이패드: 공유 시트 → "이미지 저장"을 누르면 사진 앱에 바로 들어가요
+    if (IS_IOS && navigator.share && navigator.canShare) {
+      if (!f) {
+        try { f = new File([await photoBlob(p)], albumFileName(p), { type: 'image/jpeg' }); if (lb) lb.file = { src: p.src, f }; } catch (e) {}
+      }
+      if (f && navigator.canShare({ files: [f] })) {
+        try {
+          await navigator.share({ files: [f] });
+        } catch (err) {
+          if (err.name === 'NotAllowedError') toast(t('saveRetry')); // 받는 사이 누른 효과가 끝났으면 한 번 더
+        }
+        return;
+      }
+    }
+
+    // 안드로이드·컴퓨터: 파일로 내려받기 (안드로이드는 갤러리·구글 포토의 Download 폴더에 들어가요)
+    const url = f ? URL.createObjectURL(f) : UP.downloadUrl(p, albumFileName(p)); // 아직 못 받았으면 Supabase가 "내려받기"로 보내줘요
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = albumFileName(p);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    if (f) setTimeout(() => URL.revokeObjectURL(url), 10000);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (lb) {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') lbGo(-1);
+      else if (e.key === 'ArrowRight') lbGo(1);
+    } else if (upState && !upState.busy && e.key === 'Escape') closeUpload();
+  });
+
   /* ---------- 라우터 ---------- */
   let lastRoute = '';
 
@@ -826,6 +1288,7 @@
     else if (page === 'info') html = renderInfo();
     else if (page === 'korean') html = renderKorean();
     else if (page === 'fx') html = renderFx();
+    else if (page === 'album') html = renderAlbum();
     else html = renderHome();
 
     if (map) { map.remove(); map = null; } // 화면을 다시 그리기 전에 이전 지도 정리
@@ -862,7 +1325,16 @@
       fxFrom = 'KRW';
       fxAmount = el.dataset.krw;
       render();
+    } else if (el.dataset.action === 'album-open') {
+      openLightbox(+el.dataset.i);
     }
+  });
+
+  // 앨범: 사진을 고르면 올리기 시트 열기
+  app.addEventListener('change', (e) => {
+    if (e.target.id !== 'album-file') return;
+    openUpload([...e.target.files]);
+    e.target.value = ''; // 같은 사진을 다시 골라도 열리게
   });
 
   // 환율 입력: 다시 그리지 않고 결과만 바꿔서 키보드 포커스 유지
@@ -879,7 +1351,7 @@
    * 관리자 페이지나 코드로 고친 내용이 배포되면, 열려 있는 사이트가 알아서 새로고침돼요.
    * 1분마다 + 앱으로 다시 돌아올 때 파일을 확인하고, 바뀌었으면 보던 화면·스크롤 그대로 다시 불러와요.
    * ---------------------------------- */
-  const WATCH = ['index.html', 'places.js', 'voices.js', 'data.js', 'app.js', 'styles.css'];
+  const WATCH = ['index.html', 'places.js', 'voices.js', 'data.js', 'album-store.js', 'app.js', 'styles.css'];
   let known = null; // 처음 확인했을 때의 파일 내용
 
   // 새로고침 전 스크롤 위치 복원
@@ -898,6 +1370,7 @@
       if (texts.some((s, i) => s !== known[i])) {
         // 환율 입력 중이면 방해하지 않고 다음 확인 때 새로고침
         if (document.activeElement && document.activeElement.id === 'fx-input') return;
+        if (document.querySelector('.lb, .sheet-back')) return; // 사진을 크게 보거나 올리는 중이면 다음 확인 때
         try { sessionStorage.setItem('reloadScrollY', String(window.scrollY)); } catch (e) {}
         location.reload();
       }
