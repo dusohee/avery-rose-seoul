@@ -133,8 +133,19 @@ window.DATA = {
       tags: { ko: ['등산', '전망'], en: ['Hiking', 'Views'] },
       notice: { ko: '대부분 계단. 운동화와 물 챙기기', en: 'Mostly stairs. Wear sneakers and bring water' },
       howToGet: {
-        ko: '3호선 을지로3가 → 경복궁 1번 출구 → 사직공원 지나 등산로 입구',
-        en: 'Line 3 Euljiro 3-ga → Gyeongbokgung Exit 1 → past Sajik Park to the trailhead',
+        ko: '3호선 을지로3가 → 경복궁 3번 출구 → 버스 1020·7022·7212 → 자하문고개·윤동주문학관 하차 (청운공원 바로 앞)',
+        en: 'Line 3 Euljiro 3-ga → Gyeongbokgung Exit 3 → Bus 1020, 7022 or 7212 → get off at Jahamun Pass / Yun Dong-ju Literary Museum (right by Cheongun Park)',
+      },
+      course: {
+        meta: { ko: '약 2.9km · 1시간 30분 (쉬는 시간 빼고)', en: '~2.9 km · about 1.5 hours (not counting breaks)' },
+        steps: [
+          { name: { ko: '청운공원', en: 'Cheongun Park' }, note: { ko: '출발! 윤동주문학관 바로 옆', en: 'Start here, right next to the Yun Dong-ju Literary Museum' } },
+          { name: { ko: '청운문학도서관', en: 'Cheongun Literature Library' }, note: { ko: '한옥 도서관 구경', en: 'Peek into the hanok library' } },
+          { name: { ko: '더숲 초소책방', en: 'The Forest Choso Bookstore' }, note: { ko: '커피 한 잔하고 출발', en: 'Grab a coffee before the climb' } },
+          { name: { ko: '인왕산 숲속쉼터', en: 'Inwangsan Forest Shelter' }, note: { ko: '숲 보며 잠깐 쉬기', en: 'A short rest facing the woods' } },
+          { name: { ko: '인왕산 정상 (339m)', en: 'Inwangsan Summit (339 m)' }, note: { ko: '경복궁과 서울 시내 내려다보기', en: 'Look down on Gyeongbokgung and downtown Seoul' } },
+          { name: { ko: '인왕산 호랑이동상', en: 'Inwangsan Tiger Statue' }, note: { ko: '도착! 호랑이랑 사진 찍기', en: 'Finish — take a photo with the tiger' } },
+        ],
       },
     },
     {
@@ -417,10 +428,15 @@ window.DATA = {
     { file: 'areas/museum.jpg', artist: 'Jinah78', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Front_view_of_national_museum_of_korea.jpg' },
     { file: 'places/hongdae-street.jpg', artist: 'Minseong Kim', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Hongdae_Street.jpg' },
     { file: 'places/marronnier-park.jpg', artist: 'Seefooddiet', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Marronnier_Park_01.jpg' },
-    // 아래 4장은 가게 사진이 아니라 대표 메뉴·분위기 사진
-    { file: 'places/oiji.jpg', artist: 'titanium22', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Korean_stew-Sundubu_jjigae-05.jpg' },
-    { file: 'places/munhwa-sikdang.jpg', artist: 'Philip Mallis', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Pork_tagliatelle_pasta_dish_at_restaurant_in_Rome,_Italy.jpg' },
-    { file: 'places/seongbuk-postcard.jpg', artist: 'Derek Harper', license: 'CC BY-SA 2.0', url: 'https://commons.wikimedia.org/wiki/File:Postcards_at_Mevagissey_-_geograph.org.uk_-_1389045.jpg' },
-    { file: 'places/mongbru.jpg', artist: 'Kim Sanso', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Latte_art_4.jpg' },
+    // 남대문 — 아래 3장도 가게 사진이 아니라 대표 메뉴 사진
+    { file: 'places/toki.jpg', artist: 'Andy Li', license: 'CC0', url: 'https://commons.wikimedia.org/wiki/File:Shoyu_ramen_-_Goemon_Ramen_Bar_2024-01-26.jpg' },
+    { file: 'places/chili.jpg', artist: 'Carstor', license: 'CC BY-SA 2.5', url: 'https://commons.wikimedia.org/wiki/File:Bowl_of_chili.jpg' },
+    { file: 'places/nonoshop.jpg', artist: 'studio tdes', license: 'CC BY 2.0', url: 'https://commons.wikimedia.org/wiki/File:Espresso_cup_and_saucer,_2011.jpg' },
+    // 공릉 — 두물마루는 근처 중랑천 야경, 나머지 4장은 가게 사진이 아니라 대표 메뉴 사진
+    { file: 'places/dumulmaru.jpg', artist: 'Ox1997cow', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Jungnangcheon_in_Nowon-gu_at_night_20240304.jpg' },
+    { file: 'places/muiro.jpg', artist: 'Hazel Fowler', license: 'Public domain', url: 'https://commons.wikimedia.org/wiki/File:Pavlova_dessert.JPG' },
+    { file: 'places/naive.jpg', artist: 'Sarah Stierch (Missvain)', license: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:Chicken_tenders_and_french_fries_-_June_2023_-_Sarah_Stierch.jpg' },
+    { file: 'places/hyudonjeong.jpg', artist: 'Fred Cherrygarden', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Tonkatsu_at_Miyoshiya.jpg' },
+    { file: 'places/cafe-forest.jpg', artist: 'בר', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Einspänner_Kaffee.jpg' },
   ],
 };
