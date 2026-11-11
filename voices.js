@@ -14,5 +14,6 @@ window.VOICES = {
   "두 개 주세요": "audio/phrases/du-gae-juseyo-mwbh9si7.wav",
   "물 주세요": "audio/phrases/mul-juseyo-mwbha0px.wav",
   "안 맵게 해 주세요": "audio/phrases/an-maepge-hae-juseyo-mwbha9n5.wav",
-  "맛있어요!": "audio/phrases/masisseoyo-mwbhai09.wav"
+  "맛있어요!": "audio/phrases/masisseoyo-mwbhai09.wav",
+  "계산해 주세요": "audio/phrases/gyesanhae-juseyo-mwbhaqty.wav"
 };
