@@ -10,5 +10,6 @@ window.VOICES = {
   "죄송합니다": "audio/phrases/joesong-hamnida-mwbh8r41.wav",
   "저기요": "audio/phrases/jeogiyo-mwbh8zzj.wav",
   "괜찮아요": "audio/phrases/gwaenchanayo-mwbh982u.wav",
-  "이거 주세요": "audio/phrases/igeo-juseyo-mwbh9jyc.wav"
+  "이거 주세요": "audio/phrases/igeo-juseyo-mwbh9jyc.wav",
+  "두 개 주세요": "audio/phrases/du-gae-juseyo-mwbh9si7.wav"
 };
