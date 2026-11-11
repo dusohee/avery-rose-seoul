@@ -5,5 +5,6 @@
  * ========================================================= */
 window.VOICES = {
   "안녕하세요": "audio/phrases/annyeong-haseyo-mwbh6xt1.wav",
-  "감사합니다": "audio/phrases/gamsa-hamnida-mwbh88y5.wav"
+  "감사합니다": "audio/phrases/gamsa-hamnida-mwbh88y5.wav",
+  "네 / 아니요": "audio/phrases/ne-aniyo-mwbh8ij3.wav"
 };
